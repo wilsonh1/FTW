@@ -15,7 +15,7 @@ public class MultiPlayerServer extends Game {
         players = new HashMap<String, Player>();
         InetAddress local = InetAddress.getLocalHost();
         System.out.println("IP: " + local.getHostAddress());
-        String hostName = local.getHostName();
+        String hostName = local.getHostName().toLowerCase();
         System.out.println("Name: " + hostName);
         players.put(hostName, new Player(n, true));
         getPlayers();
@@ -44,10 +44,14 @@ public class MultiPlayerServer extends Game {
                 e.printStackTrace();
             }
             clients.add(connection);
-            System.out.println(connection.getInetAddress().getHostName() + " joined");
+            String playerName = connection.getInetAddress().getHostName().toLowerCase();
+            System.out.println(playerName + " joined");
+            players.put(playerName + "a", new Player(getCount(), true));
             System.out.print(">>> ");
         }
         System.out.println(clients.size());
+        for (String name : players.keySet())
+            System.out.println(name);
     }
 
     public String run () {
