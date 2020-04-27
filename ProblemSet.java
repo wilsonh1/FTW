@@ -2,7 +2,7 @@ import java.util.*;
 import java.io.*;
 
 public class ProblemSet {
-    public ArrayList<Problem> list;
+    private ArrayList<Problem> list;
 
     public ProblemSet (String q, String a, String i) throws IOException {
         list = new ArrayList<Problem>();

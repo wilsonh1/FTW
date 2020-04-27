@@ -4,7 +4,6 @@ import java.io.*;
 public class TimedResponse {
     private Response res;
     private int timeout;
-    // Input Stream ?
 
     public TimedResponse (int to) {
         res = new Response();
@@ -18,7 +17,6 @@ public class TimedResponse {
         try {
             res.setInput(result.get(timeout, TimeUnit.SECONDS));
         } catch (TimeoutException e) {
-            //System.out.println("Time's up !");
             result.cancel(true);
             res.setInput(null);
         } catch (ExecutionException e) {
@@ -28,7 +26,6 @@ public class TimedResponse {
         }
         res.setRecieved(System.currentTimeMillis());
         executor.shutdown();
-        //System.out.println(res);
         return res;
     }
 

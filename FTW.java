@@ -1,4 +1,5 @@
 import java.io.*;
+import java.net.*;
 
 public class FTW {
     private static final String questions = "data/questions.txt";
@@ -7,28 +8,32 @@ public class FTW {
 
     private static PrintWriter logger;
 
-    public static void main (String[] args) throws IOException {
+    public static void main (String[] args) throws IOException, UnknownHostException {
         ProblemSet ps = new ProblemSet(questions, answers, images);
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         String command = "";
         while (!command.equals("exit")) {
             prompt("");
             command = br.readLine();
+            Game g;
             if (command.equals("start")) {
                 logger = new PrintWriter(new BufferedWriter(new FileWriter("log.txt")));
-                Game g;
                 prompt("single / multi - player");
                 String type = br.readLine();
                 prompt("# of problems");
                 int n = Integer.parseInt(br.readLine());
-                prompt("time per problem");
+                prompt("Time per problem");
                 int t = Integer.parseInt(br.readLine());
                 if (type.equals("single"))
                     g = new SinglePlayer(ps, n, t);
                 else
-                    g = new MultiPlayer(ps, n, t);
+                    g = new MultiPlayerServer(ps, n, t);
                 System.out.println(g.run());
                 logger.close();
+            } else if (command.equals("join")) {
+                prompt("Host IP");
+                String ip = br.readLine();
+                g = new MultiPlayerClient(ip);
             }
         }
     }

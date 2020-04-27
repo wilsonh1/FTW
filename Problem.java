@@ -1,4 +1,6 @@
-public class Problem {
+import java.io.*;
+
+public class Problem implements Serializable {
     private String question, answer, imgURL;
 
     public Problem (String q, String a, String i) {

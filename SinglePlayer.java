@@ -1,9 +1,9 @@
 public class SinglePlayer extends Game {
-    Player player;
+    private Player player;
 
     public SinglePlayer (ProblemSet ps, int n, int t) {
         super(ps, n, t);
-        player = new Player(n);
+        player = new Player(n, false);
     }
 
     public String run () {

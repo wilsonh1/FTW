@@ -1,14 +1,11 @@
 public class Player {
+    private boolean isMulti;
     private int cnt, correct;
     private double time;
-    private String name;
 
-    public Player (int n) {
+    public Player (int n, boolean is) {
         cnt = n;
-    }
-
-    public Player (String s) {
-        name = s;
+        isMulti = is;
     }
 
     public void addPoints () {
@@ -21,7 +18,7 @@ public class Player {
 
     public String toString () {
         String s = "Results\n-------\n";
-        if (name != null)
+        if (isMulti)
             return s + "Points: " + correct;
         return s + "Accuracy: " + String.format("%.2f%%\n", correct * 100.0 / cnt) + "Average time: " + String.format("%.2fs", time / cnt);
     }

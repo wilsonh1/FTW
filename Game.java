@@ -3,7 +3,8 @@ public abstract class Game {
     private int cnt, time;
 
     public Game (ProblemSet ps, int n, int t) {
-        problems = ps.getProblems(n);
+        if (ps != null)
+            problems = ps.getProblems(n);
         cnt = n;
         time = t;
     }
@@ -42,13 +43,4 @@ public abstract class Game {
     }
 
     abstract String run ();
-
-    protected class ServerData {
-        private String command, data;
-
-        protected ServerData (String c, String d) {
-            command = c;
-            data = d;
-        }
-    }
 }
