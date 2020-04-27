@@ -38,9 +38,13 @@ public abstract class Game {
         return r.getTime();
     }
 
-    protected double askQuestion (int index) {
-        return askQuestion(problems[index]);
-    }
-
     abstract String run ();
+
+    protected void wait (int ms) {
+        try {
+            Thread.sleep(ms);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
 }
