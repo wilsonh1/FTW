@@ -12,7 +12,7 @@ public class ProblemSet {
         String question;
         while ((question = brq.readLine()) != null) {
             String imgURL = bri.readLine();
-            if (imgURL.equals(""))
+            if (imgURL == null || imgURL.equals(""))
                 list.add(new Problem(question, bra.readLine(), null));
             else
                 list.add(new Problem(question, bra.readLine(), imgURL));

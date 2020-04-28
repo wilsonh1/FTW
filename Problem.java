@@ -13,11 +13,15 @@ public class Problem implements Serializable {
         return question;
     }
 
+    public String getImg () {
+        return imgURL;
+    }
+
     public boolean checkAnswer (String input) {
         return answer.equals(input.toLowerCase());
     }
 
     public String toString () {
-        return question + " " + answer + ((imgURL != null) ? " " + imgURL : "");
+        return question + " " + answer + " " + imgURL;
     }
 }
