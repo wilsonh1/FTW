@@ -33,16 +33,13 @@ public abstract class Game {
         String input = r.getInput();
         if (input == null) {
             System.out.println("Time's up !");
-            //FTW.log("t " + r);
             return -time;
         }
         if (!p.checkAnswer(input)) {
             System.out.println("Incorrect ! " + r.getTime() + "s");
-            //FTW.log("x " + r);
             return -r.getTime();
         }
         System.out.println("Correct ! " + r.getTime() + "s");
-        //FTW.log("* " + r);
         return r.getTime();
     }
 

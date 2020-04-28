@@ -5,8 +5,6 @@ public class FTW {
     private static final String answers = "data/answers.txt";
     private static final String images = "data/images.txt";
 
-    //private static PrintWriter logger;
-
     public static void main (String[] args) throws Exception {
         ProblemSet ps = new ProblemSet(questions, answers, images);
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -16,7 +14,6 @@ public class FTW {
             command = br.readLine();
             Game g;
             if (command.equals("start")) {
-                //logger = new PrintWriter(new BufferedWriter(new FileWriter("log.txt")));
                 prompt("single / multi - player");
                 String type = br.readLine();
                 prompt("# of problems");
@@ -28,7 +25,6 @@ public class FTW {
                 else
                     g = new MultiPlayerServer(ps, n, t);
                 System.out.println(g.run());
-                //logger.close();
             } else if (command.equals("join")) {
                 prompt("Host IP");
                 String ip = br.readLine();
@@ -45,9 +41,5 @@ public class FTW {
     public static void prompt (String s) {
         System.out.println(s);
         prompt();
-    }
-
-    public static void log (String s) {
-        //logger.println(s);
     }
 }

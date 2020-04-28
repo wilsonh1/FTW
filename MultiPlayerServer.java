@@ -152,7 +152,7 @@ public class MultiPlayerServer extends Game {
 
         private Client (Socket c) throws IOException {
             connection = c;
-            name = c.getInetAddress().getHostName().toLowerCase() + "a";
+            name = c.getInetAddress().getHostName().toLowerCase();
             oos = new ObjectOutputStream(c.getOutputStream());
             ois = new ObjectInputStream(c.getInputStream());
         }
