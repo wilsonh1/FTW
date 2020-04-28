@@ -19,9 +19,7 @@ public class TimedResponse {
         } catch (TimeoutException e) {
             result.cancel(true);
             res.setInput(null);
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
+        } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
         res.setRecieved(System.currentTimeMillis());
@@ -30,12 +28,12 @@ public class TimedResponse {
     }
 
     private class PlayerInput implements Callable<String> {
-        public String call() throws IOException {
+        public String call () throws IOException {
             BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
             String input = "";
             res.setSent(System.currentTimeMillis());
             while (input.equals("")) {
-                System.out.print(">>> ");
+                FTW.prompt();
                 try {
                     while (!br.ready()) {
                         Thread.sleep(10);

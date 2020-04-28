@@ -13,6 +13,14 @@ public abstract class Game {
         return cnt;
     }
 
+    protected int getTime () {
+        return time;
+    }
+
+    protected void setTime (int t) {
+        time = t;
+    }
+
     protected Problem getProblemByIndex (int index) {
         return problems[index];
     }
@@ -38,7 +46,7 @@ public abstract class Game {
         return r.getTime();
     }
 
-    abstract String run ();
+    abstract String run () throws Exception;
 
     protected void wait (int ms) {
         try {

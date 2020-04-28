@@ -1,4 +1,4 @@
-public class Player {
+public class Player implements Comparable<Player> {
     private boolean isMulti;
     private int cnt, correct;
     private double time;
@@ -14,6 +14,10 @@ public class Player {
 
     public void addTime (double t) {
         time += t;
+    }
+
+    public int compareTo (Player p) {
+        return correct - p.correct;
     }
 
     public String toString () {

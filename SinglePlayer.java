@@ -6,7 +6,7 @@ public class SinglePlayer extends Game {
         player = new Player(n, false);
     }
 
-    public String run () {
+    public String run () throws Exception {
         System.out.println("Starting game...");
         wait(2500);
         for (int i = 0; i < getCount(); i++) {
@@ -17,10 +17,8 @@ public class SinglePlayer extends Game {
             }
             else
                 player.addTime(-t);
-            //if (i < getCount() - 1) {
-                System.out.println((i < getCount() - 1) ? "Next question..." : "Results...");
-                wait(5000);
-            //}
+            System.out.println((i < getCount() - 1) ? "Next question..." : "Results...");
+            wait(5000);
         }
         System.out.print("\033[H\033[2J");
         return player.toString();

@@ -22,7 +22,7 @@ public class ProblemSet {
     public Problem[] getProblems (int n) {
         ArrayList<Problem> copy = new ArrayList<Problem>(list);
         Problem[] p = new Problem[n];
-        for (int i=0; i<n; i++) {
+        for (int i = 0; i < n; i++) {
             int index = (int)(Math.random() * copy.size());
             p[i] = copy.get(index);
             copy.remove(index);
