@@ -3,7 +3,7 @@ public class SinglePlayer extends Game {
 
     public SinglePlayer (ProblemSet ps, int n, int t) {
         super(ps, n, t);
-        player = new Player(n, false);
+        player = new Player(n, null);
     }
 
     public String run () throws Exception {

@@ -1,5 +1,3 @@
-// store HashSet of Players, created by Server
-// Thread invokeAny
 import java.util.*;
 import java.net.*;
 import java.io.*;
@@ -7,23 +5,23 @@ import java.util.concurrent.*;
 
 public class MultiPlayerServer extends Game {
     private HashMap<String, Player> players;
-    //private TreeSet<Player> leaderboard;
+    private TreeSet<Player> leaderboard;
 
-    private String hostName;
     private ServerSocket server;
+    private String hostName;
     private ArrayList<Client> clients;
 
     public MultiPlayerServer (ProblemSet ps, int n, int t) throws IOException {
         super(ps, n, t);
         players = new HashMap<String, Player>();
-        //leaderboard = new TreeSet<Player>();
+        leaderboard = new TreeSet<Player>();
         InetAddress local = InetAddress.getLocalHost();
         System.out.println("IP: " + local.getHostAddress());
         hostName = local.getHostName().toLowerCase();
         System.out.println("Name: " + hostName);
-        Player hp = new Player(n, true);
+        Player hp = new Player(n, hostName);
         players.put(hostName, hp);
-        //leaderboard.add(hp);
+        leaderboard.add(hp);
         getPlayers();
     }
 
@@ -52,9 +50,9 @@ public class MultiPlayerServer extends Game {
             Client c = new Client(connection);
             clients.add(c);
             System.out.println(c.getName() + " joined");
-            Player cp = new Player(getCount(), true);
+            Player cp = new Player(getCount(), c.getName());
             players.put(c.getName(), cp);
-            //leaderboard.add(cp);
+            leaderboard.add(cp);
             FTW.prompt();
         }
     }
@@ -70,15 +68,17 @@ public class MultiPlayerServer extends Game {
             Problem p = getProblemByIndex(i);
             ArrayList<Callable<Double>> tasks = createTasks(p);
             ExecutorService executor = Executors.newFixedThreadPool(players.size());
-            List<Future<Double>> results = null;
+            List<Future<Double>> res = null;
             try {
-                results = executor.invokeAll(tasks);
+                res = executor.invokeAll(tasks);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
             executor.shutdown();
-            for (int j = 0; j < results.size(); j++) {
-                Future<Double> f = results.get(j);
+            double mn = getTime() + 1;
+            Player first = null;
+            for (int j = 0; j < res.size(); j++) {
+                Future<Double> f = res.get(j);
                 double t = 0;
                 try {
                     t = f.get();
@@ -87,20 +87,32 @@ public class MultiPlayerServer extends Game {
                 }
                 if (t <= 0)
                     continue;
-                else {
-                    Player pl = players.get((j == 0) ? hostName : clients.get(j).getName());
-                    //leaderboard.remove(pl);
-                    pl.addPoints();
-                    //leaderboard.add(pl);
+                else if (t < mn) {
+                    mn = t;
+                    first = players.get((j == 0) ? hostName : clients.get(j).getName());
                 }
             }
+            String m;
+            if (first != null) {
+                leaderboard.remove(first);
+                first.addPoints();
+                leaderboard.add(first);
+                m = "Question answered by " + first.getName() + " " + mn + "s";
+            }
+            else
+                m = "Question answered by no one";
+            System.out.println(m);
+            for (Client c : clients)
+                c.sendMessage(m);
             System.out.println((i < getCount() - 1) ? "Next question..." : "Results...");
             wait(5000);
         }
         System.out.print("\033[H\033[2J");
+        HashMap<String, String> results = getResults();
         for (Client c : clients)
-            c.sendMessage(players.get(c.getName()).toString());
-        return players.get(hostName).toString();
+            c.sendMessage(results.get(c.getName()));
+        server.close();
+        return results.get(hostName);
     }
 
     private ArrayList<Callable<Double>> createTasks (Problem p) throws Exception {
@@ -117,6 +129,19 @@ public class MultiPlayerServer extends Game {
             tasks.add(clientInput);
         }
         return tasks;
+    }
+
+    private HashMap<String, String> getResults () {
+        HashMap<String, String> res = new HashMap<String, String>();
+        int rank = 0, pre = -1;
+        for (Player p : leaderboard) {
+            if (p.getPoints() != pre) {
+                rank++;
+                pre = p.getPoints();
+            }
+            res.put(p.getName(), p.toString() + "\nRank: " + rank);
+        }
+        return res;
     }
 
     private class Client {

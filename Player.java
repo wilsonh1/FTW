@@ -1,11 +1,11 @@
 public class Player implements Comparable<Player> {
-    private boolean isMulti;
     private int cnt, correct;
     private double time;
+    private String name; // use name instead
 
-    public Player (int n, boolean is) {
+    public Player (int n, String mn) {
         cnt = n;
-        isMulti = is;
+        name = mn;
     }
 
     public void addPoints () {
@@ -16,13 +16,23 @@ public class Player implements Comparable<Player> {
         time += t;
     }
 
+    public String getName () {
+        return name;
+    }
+
+    public int getPoints () {
+        return correct;
+    }
+
     public int compareTo (Player p) {
+        if (correct == p.correct)
+            return name.compareTo(p.name);
         return correct - p.correct;
     }
 
     public String toString () {
         String s = "Results\n-------\n";
-        if (isMulti)
+        if (name != null)
             return s + "Points: " + correct;
         return s + "Accuracy: " + String.format("%.2f%%\n", correct * 100.0 / cnt) + "Average time: " + String.format("%.2fs", time / cnt);
     }

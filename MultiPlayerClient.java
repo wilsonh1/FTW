@@ -1,4 +1,3 @@
-// server -> problem statement -> client -> ask question
 import java.net.*;
 import java.io.*;
 
@@ -26,6 +25,8 @@ public class MultiPlayerClient extends Game {
             Problem p = (Problem)ois.readObject();
             oos.writeObject(askQuestion(p));
             oos.flush();
+            String m = (String)ois.readObject();
+            System.out.println(m);
             System.out.println((i < n - 1) ? "Next question..." : "Results...");
         }
         String pr = (String)ois.readObject();
