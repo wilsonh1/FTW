@@ -89,7 +89,7 @@ public class MultiPlayerServer extends Game {
                     continue;
                 else if (t < mn) {
                     mn = t;
-                    first = players.get((j == 0) ? hostName : clients.get(j).getName());
+                    first = players.get((j == 0) ? hostName : clients.get(j - 1).getName());
                 }
             }
             String m;
