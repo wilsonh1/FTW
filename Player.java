@@ -27,7 +27,7 @@ public class Player implements Comparable<Player> {
     public int compareTo (Player p) {
         if (correct == p.correct)
             return name.compareTo(p.name);
-        return correct - p.correct;
+        return p.correct - correct;
     }
 
     public String toString () {
