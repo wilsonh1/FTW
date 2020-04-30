@@ -1,7 +1,7 @@
 public class Player implements Comparable<Player> {
     private int cnt, correct;
     private double time;
-    private String name; // use name instead
+    private String name;
 
     public Player (int n, String mn) {
         cnt = n;

@@ -97,10 +97,10 @@ public class MultiPlayerServer extends Game {
                 leaderboard.remove(first);
                 first.addPoints();
                 leaderboard.add(first);
-                m = "Question answered by " + first.getName() + " " + mn + "s";
+                m = "Answered by " + first.getName() + " " + mn + "s";
             }
             else
-                m = "Question answered by no one";
+                m = "Answered by no one";
             System.out.println(m);
             for (Client c : clients)
                 c.sendMessage(m);
