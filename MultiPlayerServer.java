@@ -67,7 +67,7 @@ public class MultiPlayerServer extends Game {
         for (int i = 0; i < getCount(); i++) {
             Problem p = getProblemByIndex(i);
             ArrayList<Callable<Double>> tasks = createTasks(p);
-            ExecutorService executor = Executors.newFixedThreadPool(players.size());
+            ExecutorService executor = Executors.newFixedThreadPool(clients.size() + 1);
             List<Future<Double>> res = null;
             try {
                 res = executor.invokeAll(tasks);
