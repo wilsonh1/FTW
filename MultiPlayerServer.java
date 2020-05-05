@@ -101,9 +101,13 @@ public class MultiPlayerServer extends Game {
             }
             else
                 m = "Answered by no one";
-            System.out.println(m);
+            String lb = "-----------\nLeaderboard\n";
+            for (Player rnk : leaderboard)
+                lb += rnk.getName() + " - " + rnk.getPoints() + "points\n";
+            lb += "-----------\n";
+            System.out.println(m + "\n" + lb);
             for (Client c : clients)
-                c.sendMessage(m);
+                c.sendMessage(m + "\n" + lb);
             System.out.println((i < getCount() - 1) ? "Next question..." : "Results...");
             wait(5000);
         }
