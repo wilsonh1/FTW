@@ -30,7 +30,6 @@ public abstract class Game {
         System.out.println(p.getQuestion());
         System.out.println(System.currentTimeMillis());
         TimedResponse r = new TimedResponse(time);
-        System.out.println(r);
         String input = r.getInput();
         if (input == null) {
             System.out.println("Time's up !");
