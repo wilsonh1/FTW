@@ -28,8 +28,9 @@ public abstract class Game {
     protected double askQuestion (Problem p) {
         System.out.print("\033[H\033[2J");
         System.out.println(p.getQuestion());
-        TimedResponse tr = new TimedResponse(time);
-        Response r = tr.getResponse();
+        System.out.println(System.currentTimeMillis());
+        TimedResponse r = new TimedResponse(time);
+        System.out.println(r);
         String input = r.getInput();
         if (input == null) {
             System.out.println("Time's up !");

@@ -2,36 +2,41 @@ import java.util.concurrent.*;
 import java.io.*;
 
 public class TimedResponse {
-    private Response res;
-    private int timeout;
+    private String input;
+    private long sent, received;
 
-    public TimedResponse (int to) {
-        res = new Response();
-        timeout = to;
-    }
-
-    public Response getResponse () {
+    public TimedResponse (int timeout) {
+        sent = System.currentTimeMillis();
         PlayerInput task = new PlayerInput();
         ExecutorService executor = Executors.newSingleThreadExecutor();
         Future<String> result = executor.submit(task);
         try {
-            res.setInput(result.get(timeout, TimeUnit.SECONDS));
+            input = result.get(timeout, TimeUnit.SECONDS);
         } catch (TimeoutException e) {
             result.cancel(true);
-            res.setInput(null);
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
-        res.setRecieved(System.currentTimeMillis());
+        received = System.currentTimeMillis();
         executor.shutdown();
-        return res;
+    }
+
+    public String getInput () {
+        return input;
+    }
+
+    public double getTime () {
+        return (received - sent)/1000.0;
+    }
+
+    public String toString () {
+        return input + " " + sent + " " + received;
     }
 
     private class PlayerInput implements Callable<String> {
         public String call () throws IOException {
             BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
             String input = "";
-            res.setSent(System.currentTimeMillis());
             while (input.equals("")) {
                 FTW.prompt();
                 try {
