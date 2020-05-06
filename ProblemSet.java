@@ -29,8 +29,4 @@ public class ProblemSet {
         }
         return p;
     }
-
-    public int getSize () {
-        return list.size();
-    }
 }
