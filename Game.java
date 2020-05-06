@@ -2,9 +2,12 @@ public abstract class Game {
     private Problem[] problems;
     private int cnt, time;
 
+    public Game () {
+        cnt = time = -1;
+    }
+
     public Game (ProblemSet ps, int n, int t) {
-        if (ps != null)
-            problems = ps.getProblems(n);
+        problems = ps.getProblems(n);
         cnt = n;
         time = t;
     }
