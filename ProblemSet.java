@@ -33,11 +33,4 @@ public class ProblemSet {
     public int getSize () {
         return list.size();
     }
-
-    public String toString () {
-        String s = list.size() + "\n";
-        for (Problem p : list)
-            s += p + "\n";
-        return s;
-    }
 }

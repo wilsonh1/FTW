@@ -29,10 +29,6 @@ public class TimedResponse {
         return (received - sent)/1000.0;
     }
 
-    public String toString () {
-        return input + " " + sent + " " + received;
-    }
-
     private class PlayerInput implements Callable<String> {
         public String call () throws IOException {
             BufferedReader br = new BufferedReader(new InputStreamReader(System.in));

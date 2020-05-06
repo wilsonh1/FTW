@@ -78,13 +78,7 @@ public class MultiPlayerServer extends Game {
             double mn = getTime() + 1;
             Player first = null;
             for (int j = 0; j < res.size(); j++) {
-                Future<Double> f = res.get(j);
-                double t = 0;
-                try {
-                    t = f.get();
-                } catch (ExecutionException | InterruptedException e) {
-                    e.printStackTrace();
-                }
+                double t = res.get(j).get();
                 if (t <= 0)
                     continue;
                 else if (t < mn) {

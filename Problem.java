@@ -20,8 +20,4 @@ public class Problem implements Serializable {
     public boolean checkAnswer (String input) {
         return answer.equals(input.toLowerCase());
     }
-
-    public String toString () {
-        return question + " " + answer + " " + imgURL;
-    }
 }
