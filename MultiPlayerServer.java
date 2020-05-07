@@ -38,7 +38,7 @@ public class MultiPlayerServer extends Game {
                 connection = server.accept();
             } catch (SocketTimeoutException e) {
                 if (br.ready()) {
-                    if (br.readLine().equals("begin"))
+                    if (br.readLine().equals("start"))
                         break;
                     else
                         FTW.prompt();

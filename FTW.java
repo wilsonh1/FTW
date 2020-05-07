@@ -13,7 +13,7 @@ public class FTW {
             prompt();
             command = br.readLine();
             Game g;
-            if (command.equals("start")) {
+            if (command.equals("new")) {
                 prompt("single / multi - player");
                 String type = br.readLine();
                 prompt("# of problems");
