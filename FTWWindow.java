@@ -46,7 +46,7 @@ public class FTWWindow {
     private void newGame () {
         System.out.println("new");
 
-        int psSize = FTWTest.getSize();
+        int psSize = FTW.getSize();
         JLabel modeLabel = new JLabel("Mode", JLabel.RIGHT);
         JLabel cntLabel = new JLabel("# of problems (1-" + psSize + ")", JLabel.RIGHT);
         JTextField cntField = new JTextField("5");
@@ -106,7 +106,7 @@ public class FTWWindow {
         }
         frame.setVisible(false);
         try {
-            FTWTest.startGame(mode.equals("multi"), cnt, time);
+            FTW.startGame(mode.equals("multi"), cnt, time);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -137,7 +137,7 @@ public class FTWWindow {
         String ip = ipField.getText().trim();
         frame.setVisible(false);
         try {
-            FTWTest.joinGame(ip);
+            FTW.joinGame(ip);
         } catch (Exception e) {
             e.printStackTrace();
         }
