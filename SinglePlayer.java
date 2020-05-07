@@ -1,8 +1,8 @@
 public class SinglePlayer extends Game {
     private Player player;
 
-    public SinglePlayer (ProblemSet ps, int n, int t) {
-        super(ps, n, t);
+    public SinglePlayer (Problem[] p, int n, int t) {
+        super(p, n, t);
         player = new Player(n, null);
     }
 

@@ -11,8 +11,8 @@ public class MultiPlayerServer extends Game {
     private String hostName;
     private ArrayList<Client> clients;
 
-    public MultiPlayerServer (ProblemSet ps, int n, int t) throws IOException {
-        super(ps, n, t);
+    public MultiPlayerServer (Problem[] p, int n, int t) throws IOException {
+        super(p, n, t);
         players = new HashMap<String, Player>();
         leaderboard = new TreeSet<Player>();
         InetAddress local = InetAddress.getLocalHost();

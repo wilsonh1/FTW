@@ -6,7 +6,7 @@ public class FTW {
     private static final String images = "data/images.txt";
 
     public static void main (String[] args) throws Exception {
-        ProblemSet ps = new ProblemSet(questions, answers, images);
+        /*ProblemSet ps = new ProblemSet(questions, answers, images);
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         String command = "";
         while (!command.equals("exit")) {
@@ -31,7 +31,7 @@ public class FTW {
                 g = new MultiPlayerClient(ip);
                 System.out.println(g.run());
             }
-        }
+        }*/
     }
 
     public static void prompt () {

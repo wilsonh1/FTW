@@ -6,8 +6,8 @@ public abstract class Game {
         cnt = time = -1;
     }
 
-    public Game (ProblemSet ps, int n, int t) {
-        problems = ps.getProblems(n);
+    public Game (Problem[] p, int n, int t) {
+        problems = p;
         cnt = n;
         time = t;
     }
