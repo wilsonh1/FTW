@@ -4,12 +4,11 @@ import javax.swing.*;
 import javax.swing.border.*;
 
 public class FTWWindow {
-    private JFrame frame;
+    private static JFrame frame;
 
     public FTWWindow () {
         frame = new JFrame("FTW");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLocationRelativeTo(null);
 
         JLabel title = new JLabel("FTW !");
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -40,6 +39,11 @@ public class FTWWindow {
 
         frame.add(panel);
         frame.pack();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+    }
+
+    public static void show () {
         frame.setVisible(true);
     }
 
@@ -73,7 +77,7 @@ public class FTWWindow {
         fieldsPanel.add(timeLabel);
         fieldsPanel.add(timeField);
 
-        final String[] opts = {"Start", "Cancel"};
+        final String[] opts = {"Create", "Cancel"};
 
         if (JOptionPane.showOptionDialog(frame, fieldsPanel, "New game",
             JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null,

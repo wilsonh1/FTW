@@ -1,15 +1,18 @@
 public abstract class Game {
     private Problem[] problems;
     private int cnt, time;
+    private GameWindow window;
 
-    public Game () {
+    public Game (GameWindow gw) {
         cnt = time = -1;
+        window = gw;
     }
 
-    public Game (Problem[] p, int n, int t) {
+    public Game (Problem[] p, int n, int t, GameWindow gw) {
         problems = p;
         cnt = n;
         time = t;
+        window = gw;
     }
 
     protected int getCount () {
@@ -28,10 +31,15 @@ public abstract class Game {
         return problems[index];
     }
 
+    protected void setName (String name) {
+        window.displayName(name);
+    }
+
     protected double askQuestion (Problem p) {
-        System.out.print("\033[H\033[2J");
-        System.out.println(p.getQuestion());
-        TimedResponse r = new TimedResponse(time);
+        //System.out.print("\033[H\033[2J");
+        //System.out.println(p.getQuestion());
+        window.displayProblem(p);
+        /*timedResponse r = new TimedResponse(time);
         String input = r.getInput();
         if (input == null) {
             System.out.println("Time's up !");
@@ -42,7 +50,8 @@ public abstract class Game {
             return -r.getTime();
         }
         System.out.println("Correct ! " + r.getTime() + "s");
-        return r.getTime();
+        return r.getTime();*/
+        return 0;
     }
 
     abstract String run () throws Exception;

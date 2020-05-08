@@ -11,14 +11,15 @@ public class MultiPlayerServer extends Game {
     private String hostName;
     private ArrayList<Client> clients;
 
-    public MultiPlayerServer (Problem[] p, int n, int t) throws IOException {
-        super(p, n, t);
+    public MultiPlayerServer (Problem[] p, int n, int t, GameWindow gw) throws IOException {
+        super(p, n, t, gw);
         players = new HashMap<String, Player>();
         leaderboard = new TreeSet<Player>();
         InetAddress local = InetAddress.getLocalHost();
         System.out.println("IP: " + local.getHostAddress());
         hostName = local.getHostName().toLowerCase();
-        System.out.println("Name: " + hostName);
+        setName(hostName);
+        //System.out.println("Name: " + hostName);
         Player hp = new Player(n, hostName);
         players.put(hostName, hp);
         leaderboard.add(hp);

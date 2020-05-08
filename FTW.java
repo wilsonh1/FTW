@@ -21,16 +21,18 @@ public class FTW {
         System.out.println(n);
         System.out.println(t);
         Game g;
+        GameWindow gw = new GameWindow();
         Problem[] p = ps.getProblems(n);
         if (isMulti)
-            g = new MultiPlayerServer(p, n, t);
+            g = new MultiPlayerServer(p, n, t, gw);
         else
-            g = new SinglePlayer(p, n, t);
+            g = new SinglePlayer(p, n, t, gw);
         g.run();
     }
 
     public static void joinGame (String ip) throws Exception {
-        Game g = new MultiPlayerClient(ip);
+        GameWindow gw = new GameWindow();
+        Game g = new MultiPlayerClient(ip, gw);
         g.run();
     }
 
