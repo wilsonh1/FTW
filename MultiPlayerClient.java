@@ -6,8 +6,7 @@ public class MultiPlayerClient extends Game {
     private ObjectInputStream ois;
     private ObjectOutputStream oos;
 
-    public MultiPlayerClient (String ip, GameWindow gw) throws IOException {
-        super(gw);
+    public MultiPlayerClient (String ip) throws IOException {
         server = new Socket(InetAddress.getByName(ip), 5000);
         InetAddress local = InetAddress.getLocalHost();
         //System.out.println("Name: " + local.getHostName().toLowerCase());

@@ -2,16 +2,18 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.*;
+import java.util.concurrent.atomic.*;
 
 public class GameWindow {
     private JFrame frame;
     private JPanel top, left, right, bottom;
 
-    public GameWindow () {
+    public GameWindow (AtomicBoolean active) {
         System.out.println("Here");
         frame = new JFrame("FTW");
         frame.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
+                active.set(false);
                 FTWWindow.show();
             }
         });

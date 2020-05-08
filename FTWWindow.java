@@ -53,6 +53,11 @@ public class FTWWindow {
     private void newGame () {
         System.out.println("new");
 
+        if (!gs.isFinished()) {
+            JOptionPane.showMessageDialog(frame, "Wait for current game to finish", "Game creation failed", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
         int psSize = FTW.getSize();
         JLabel modeLabel = new JLabel("Mode", JLabel.RIGHT);
         JLabel cntLabel = new JLabel("# of problems (1-" + psSize + ")", JLabel.RIGHT);
@@ -122,6 +127,11 @@ public class FTWWindow {
 
     private void joinGame () {
         System.out.println("join");
+
+        if (!gs.isFinished()) {
+            JOptionPane.showMessageDialog(frame, "Wait for current game to finish", "Game creation failed", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
 
         JLabel ipLabel = new JLabel("Host IP", JLabel.RIGHT);
         JTextField ipField = new JTextField(15);

@@ -1,21 +1,24 @@
 import javax.swing.*;//SwingUtilities.*;
+import java.util.concurrent.atomic.*;
 
 public abstract class Game {
     private Problem[] problems;
     private int cnt, time;
     private int index;
     private GameWindow window;
+    private AtomicBoolean active;
 
-    public Game (GameWindow gw) {
+    public Game () {
         cnt = time = -1;
-        window = gw;
+        active = new AtomicBoolean(true);
+        window = new GameWindow(active);
     }
 
-    public Game (Problem[] p, int n, int t, GameWindow gw) {
+    public Game (Problem[] p, int n, int t) {
+        this();
         problems = p;
         cnt = n;
         time = t;
-        window = gw;
     }
 
     protected int getCount () {
@@ -32,6 +35,10 @@ public abstract class Game {
 
     protected Problem getProblemByIndex (int index) {
         return problems[index];
+    }
+
+    protected boolean isActive () {
+        return active.get();
     }
 
     protected void displayName (String name) {

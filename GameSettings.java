@@ -1,7 +1,7 @@
 import java.util.concurrent.atomic.*;
 
 public class GameSettings {
-    private AtomicBoolean done, join, multi;
+    private AtomicBoolean done, join, multi, finished;
     private AtomicInteger cnt, time;
     private AtomicReference<String> ip;
 
@@ -12,6 +12,7 @@ public class GameSettings {
         cnt = new AtomicInteger();
         time = new AtomicInteger();
         ip = new AtomicReference<String>();
+        finished = new AtomicBoolean(true);
     }
 
     public boolean isDone () {
@@ -38,6 +39,10 @@ public class GameSettings {
         return ip.get();
     }
 
+    public boolean isFinished () {
+        return finished.get();
+    }
+
     public void setDone (boolean d) {
         done.set(d);
     }
@@ -60,5 +65,9 @@ public class GameSettings {
 
     public void setIP (String s) {
         ip.set(s);
+    }
+
+    public void setFinished (boolean f) {
+        finished.set(f);
     }
 }

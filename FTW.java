@@ -13,12 +13,13 @@ public class FTW {
         FTWWindow window = new FTWWindow(gs);
         while (true) {
             gs.setDone(false);
-            //window.show();
             while (!gs.isDone());
+            gs.setFinished(false);
             if (gs.isJoin())
                 joinGame(gs.getIP());
             else
                 startGame(gs.isMulti(), gs.getCount(), gs.getTime());
+            gs.setFinished(true);
         }
     }
 
@@ -28,18 +29,18 @@ public class FTW {
 
     public static void startGame (boolean isMulti, int n, int t) throws Exception {
         Game g;
-        GameWindow gw = new GameWindow();
+        //GameWindow gw = new GameWindow();
         Problem[] p = ps.getProblems(n);
         if (isMulti)
-            g = new MultiPlayerServer(p, n, t, gw);
+            g = new MultiPlayerServer(p, n, t);
         else
-            g = new SinglePlayer(p, n, t, gw);
+            g = new SinglePlayer(p, n, t);
         g.run();
     }
 
     public static void joinGame (String ip) throws Exception {
-        GameWindow gw = new GameWindow();
-        Game g = new MultiPlayerClient(ip, gw);
+        //GameWindow gw = new GameWindow();
+        Game g = new MultiPlayerClient(ip);
         g.run();
     }
 
