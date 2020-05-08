@@ -9,7 +9,17 @@ public class FTW {
 
     public static void main (String[] args) throws Exception {
         ps = new ProblemSet(questions, answers, images);
-        FTWWindow window = new FTWWindow();
+        GameSettings gs = new GameSettings();
+        FTWWindow window = new FTWWindow(gs);
+        while (true) {
+            gs.setDone(false);
+            //window.show();
+            while (!gs.isDone());
+            if (gs.isJoin())
+                joinGame(gs.getIP());
+            else
+                startGame(gs.isMulti(), gs.getCount(), gs.getTime());
+        }
     }
 
     public static int getSize () {
@@ -17,9 +27,6 @@ public class FTW {
     }
 
     public static void startGame (boolean isMulti, int n, int t) throws Exception {
-        System.out.println(isMulti);
-        System.out.println(n);
-        System.out.println(t);
         Game g;
         GameWindow gw = new GameWindow();
         Problem[] p = ps.getProblems(n);
@@ -44,4 +51,5 @@ public class FTW {
         System.out.println(s);
         prompt();
     }
+
 }

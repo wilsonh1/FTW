@@ -18,7 +18,7 @@ public class MultiPlayerServer extends Game {
         InetAddress local = InetAddress.getLocalHost();
         System.out.println("IP: " + local.getHostAddress());
         hostName = local.getHostName().toLowerCase();
-        setName(hostName);
+        displayName(hostName);
         //System.out.println("Name: " + hostName);
         Player hp = new Player(n, hostName);
         players.put(hostName, hp);

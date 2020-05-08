@@ -4,9 +4,12 @@ import javax.swing.*;
 import javax.swing.border.*;
 
 public class FTWWindow {
+    private GameSettings gs;
     private static JFrame frame;
 
-    public FTWWindow () {
+    public FTWWindow (GameSettings g) {
+        gs = g;
+
         frame = new JFrame("FTW");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -109,11 +112,12 @@ public class FTWWindow {
             return;
         }
         frame.setVisible(false);
-        try {
-            FTW.startGame(mode.equals("multi"), cnt, time);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
+        gs.setJoin(false);
+        gs.setMulti(mode.equals("multi"));
+        gs.setCount(cnt);
+        gs.setTime(time);
+        gs.setDone(true);
     }
 
     private void joinGame () {
@@ -140,10 +144,9 @@ public class FTWWindow {
 
         String ip = ipField.getText().trim();
         frame.setVisible(false);
-        try {
-            FTW.joinGame(ip);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
+        gs.setJoin(true);
+        gs.setIP(ip);
+        gs.setDone(true);
     }
 }

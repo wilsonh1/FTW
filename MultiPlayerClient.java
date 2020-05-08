@@ -11,7 +11,7 @@ public class MultiPlayerClient extends Game {
         server = new Socket(InetAddress.getByName(ip), 5000);
         InetAddress local = InetAddress.getLocalHost();
         //System.out.println("Name: " + local.getHostName().toLowerCase());
-        setName(local.getHostName().toLowerCase());
+        displayName(local.getHostName().toLowerCase());
         ois = new ObjectInputStream(server.getInputStream());
         oos = new ObjectOutputStream(server.getOutputStream());
     }

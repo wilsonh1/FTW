@@ -8,6 +8,7 @@ public class GameWindow {
     private JPanel top, left, right, bottom;
 
     public GameWindow () {
+        System.out.println("Here");
         frame = new JFrame("FTW");
         frame.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
@@ -51,12 +52,30 @@ public class GameWindow {
         frame.setVisible(true);
     }
 
+    public void dispose () {
+        frame.dispose();
+    }
+
     public void displayName (String name) {
         top.add(new JLabel(name), BorderLayout.LINE_END);
     }
 
-    public void displayProblem (Problem p) {
+    public void displayMessage (String m) {
+        JTextArea text = new JTextArea(m);
+        text.setWrapStyleWord(true);
+        text.setLineWrap(true);
+        text.setOpaque(false);
+        text.setEditable(false);
+        text.setFocusable(false);
+        text.setBackground(UIManager.getColor("Label.background"));
+        text.setFont(UIManager.getFont("Label.font"));
         left.removeAll();
-        left.add(new JLabel(p.getQuestion()));
+        left.add(text);
+        left.revalidate();
+        left.repaint();
+    }
+
+    public void displayProblem (Problem p) {
+        displayMessage(p.getQuestion());
     }
 }
