@@ -15,7 +15,7 @@ public class MultiPlayerClient extends Game {
         oos = new ObjectOutputStream(server.getOutputStream());
     }
 
-    public String run () throws Exception {
+    public void run () throws Exception {
         System.out.println("Waiting for players...");
         int n = (Integer)ois.readObject();
         int t = (Integer)ois.readObject();
@@ -31,7 +31,6 @@ public class MultiPlayerClient extends Game {
         }
         String pr = (String)ois.readObject();
         System.out.print("\033[H\033[2J");
-        return pr;
     }
 
 }

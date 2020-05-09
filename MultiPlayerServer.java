@@ -58,7 +58,7 @@ public class MultiPlayerServer extends Game {
         }
     }
 
-    public String run () throws Exception {
+    public void run () throws Exception {
         System.out.println("Starting game...");
         for (Client c : clients)
             c.sendMessage(getCount());
@@ -111,7 +111,6 @@ public class MultiPlayerServer extends Game {
         for (Client c : clients)
             c.sendMessage(results.get(c.getName()));
         server.close();
-        return results.get(hostName);
     }
 
     private ArrayList<Callable<Double>> createTasks (Problem p) throws Exception {

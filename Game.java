@@ -45,29 +45,39 @@ public abstract class Game {
         window.displayName(name);
     }
 
-    protected void displayMessage (String m) {
-        window.displayMessage(m);
+    protected void displayMessage (String m, boolean flag) {
+        window.displayMessage(m, flag);
+    }
+
+    protected void updateSide (String m, boolean flag) {
+        window.updateSide(m, flag);
     }
 
     protected double askQuestion (Problem p) {
         //System.out.print("\033[H\033[2J");
         //System.out.println(p.getQuestion());
         window.displayProblem(p);
-        TimedResponse r = new TimedResponse(time);
-        String input = r.getInput();
+        //System.out.println("Ask EDT " + javax.swing.SwingUtilities.isEventDispatchThread());
+        Response r = new Response();
+        window.getResponse(time, r);
+        while (!r.isDone());
+        String input = r.getInput(), res;
+        double t;
         if (input == null) {
-            System.out.println("Time's up !");
-            return -time;
+            res = "Time's up !";
+            t = -time;
+        } else if (!p.checkAnswer(input)) {
+            res = "Incorrect ! " + r.getTime() + "s";
+            t = -r.getTime();
+        } else {
+            res = "Correct ! " + r.getTime() + "s";
+            t = r.getTime();
         }
-        if (!p.checkAnswer(input)) {
-            System.out.println("Incorrect ! " + r.getTime() + "s");
-            return -r.getTime();
-        }
-        System.out.println("Correct ! " + r.getTime() + "s");
-        return r.getTime();
+        displayMessage(res, true);
+        return t;
     }
 
-    abstract String run () throws Exception;
+    abstract void run () throws Exception;
 
     protected void wait (int ms) {
         try {

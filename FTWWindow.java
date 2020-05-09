@@ -137,10 +137,9 @@ public class FTWWindow {
         JTextField ipField = new JTextField(15);
 
         JPanel fieldsPanel = new JPanel();
-        fieldsPanel.setLayout(new BoxLayout(fieldsPanel, BoxLayout.LINE_AXIS));
+        fieldsPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 0));
         fieldsPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
         fieldsPanel.add(ipLabel);
-        fieldsPanel.add(Box.createRigidArea(new Dimension(10, 0)));
         fieldsPanel.add(ipField);
 
         final String[] opts = {"Join", "Cancel"};

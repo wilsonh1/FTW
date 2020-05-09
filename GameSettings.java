@@ -63,8 +63,8 @@ public class GameSettings {
         time.set(t);
     }
 
-    public void setIP (String s) {
-        ip.set(s);
+    public void setIP (String i) {
+        ip.set(i);
     }
 
     public void setFinished (boolean f) {
