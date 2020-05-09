@@ -132,10 +132,10 @@ public class GameWindow {
         });
         bottom.addActionListener(e -> {
             String s = bottom.getText();
-            System.out.println(s);
             if (s.equals(""))
                 return;
             else {
+                System.out.println(s);
                 r.setReceived(System.currentTimeMillis());
                 r.setInput(s);
                 bottom.setText("");
