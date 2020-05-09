@@ -131,7 +131,7 @@ public class GameWindow {
             r.setDone(true);
         });
         bottom.addActionListener(e -> {
-            String s = bottom.getText();
+            String s = bottom.getText().trim().toLowerCase();
             if (s.equals(""))
                 return;
             else {
