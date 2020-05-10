@@ -135,6 +135,8 @@ public class GameWindow {
             }
             s += c;
         }
+        if (!s.equals(""))
+            res.add(s);
         return res;
     }
 
@@ -151,6 +153,7 @@ public class GameWindow {
 
     public void displayProblem (Problem p, AtomicBoolean b) {
         ArrayList<String> init = parseProblem(p);
+        System.out.println(p.getQuestion());
 
         SwingWorker worker = new SwingWorker<ArrayList<ImageIcon>, Void>() {
             public ArrayList<ImageIcon> doInBackground() throws Exception {
@@ -159,63 +162,66 @@ public class GameWindow {
                     if (!isLatex(s))
                         continue;
                     res.add(loadImage("https://latex.codecogs.com/png.latex?"
-                                + s.substring(2).replaceAll(" ", "%20"), 13));
+                            + s.substring(2).replaceAll(" ", "%20"), 13));
                 }
                 if (p.getImg() != null)
-                    res.add(loadImage(p.getImg()), 200);
+                    res.add(loadImage(p.getImg(), 200));
+                System.out.println(res);
                 return res;
+            }
+
+            protected void done () {
+                Timer timer = new Timer(5000, e -> {
+                    ArrayList<ImageIcon> imgs = new ArrayList<ImageIcon>();
+                    try {
+                        imgs = (ArrayList<ImageIcon>)get();
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                    System.out.println(imgs);
+
+                    JTextPane text = new JTextPane();
+                    text.setContentType("text/html");
+                    text.setOpaque(true);
+                    text.setEditable(false);
+                    text.setFocusable(false);
+                    text.setBackground(UIManager.getColor("Label.background"));
+                    text.setBorder(new EmptyBorder(10, 10, 10, 10));
+
+                    StyledDocument doc = text.getStyledDocument();
+                    Style regular = doc.addStyle("regular", null);
+                    StyleConstants.setFontFamily(regular, UIManager.getFont("Label.font").getFamily());
+                    StyleConstants.setFontSize(regular, UIManager.getFont("Label.font").getSize());
+
+                    for (int i = 0; i < imgs.size(); i++) {
+                        Style style = doc.addStyle("img" + i, null);
+                        StyleConstants.setIcon(style, imgs.get(i));
+                    }
+
+                    int imgCnt = 0;
+                    try {
+                        for (String s : init) {
+                            if (!isLatex(s))
+                                doc.insertString(doc.getLength(), s, doc.getStyle("regular"));
+                            else {
+                                doc.insertString(doc.getLength(), s, doc.getStyle("img" + imgCnt));
+                                imgCnt++;
+                            }
+                        }
+                        if (p.getImg() != null)
+                            doc.insertString(doc.getLength(), p.getImg(), doc.getStyle("img" + imgCnt));
+                    } catch (BadLocationException ex) {
+                        ex.printStackTrace();
+                    }
+
+                    left.setViewportView(text);
+                    b.set(true);
+                });
+                timer.setRepeats(false);
+                timer.start();
             }
         };
         worker.execute();
-
-        Timer timer = new Timer(5 * 1000, e -> {
-            ArrayList<ImageIcon> imgs = new ArrayList<ImageIcon>();
-            try {
-                imgs = (ArrayList<ImageIcon>)worker.get();
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-
-            JTextPane text = new JTextPane();
-            text.setContentType("text/html");
-            text.setOpaque(true);
-            text.setEditable(false);
-            text.setFocusable(false);
-            text.setBackground(UIManager.getColor("Label.background"));
-            text.setBorder(new EmptyBorder(10, 10, 10, 10));
-
-
-            StyledDocument doc = text.getStyledDocument();
-            Style regular = doc.addStyle("regular", null);
-            StyleConstants.setFontFamily(regular, UIManager.getFont("Label.font").getFamily());
-            StyleConstants.setFontSize(regular, UIManager.getFont("Label.font").getSize());
-
-            for (int i = 0; i < imgs.size(); i++) {
-                Style style = doc.addStyle("img" + i, null);
-                StyleConstants.setIcon(style, imgs.get(i));
-            }
-
-            int imgCnt = 0;
-            try {
-                for (String s : init) {
-                    if (!isLatex(s))
-                        doc.insertString(doc.getLength(), s, doc.getStyle("regular"));
-                    else {
-                        doc.insertString(doc.getLength(), s, doc.getStyle("img" + imgCnt));
-                        imgCnt++;
-                    }
-                }
-                if (p.getImg() != null)
-                    doc.insertString(doc.getLength(), p.getImg(), doc.getStyle("img" + imgCnt));
-            } catch (BadLocationException ex) {
-                ex.printStackTrace();
-            }
-
-            left.setViewportView(text);
-            b.set(true);
-        });
-        timer.setRepeats(false);
-        timer.start();
     }
 
     public void updateSide (String m, boolean flag) {
