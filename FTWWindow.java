@@ -64,18 +64,28 @@ public class FTWWindow {
         JTextField cntField = new JTextField("5");
         JLabel timeLabel = new JLabel("Time per problem", JLabel.RIGHT);
         JTextField timeField = new JTextField("45");
+        JLabel nameLabel = new JLabel("Name (multiplayer only)", JLabel.RIGHT);
+        JTextField nameField = new JTextField();
+        nameField.setEditable(false);
 
         JRadioButton single = new JRadioButton("single", true);
         single.setActionCommand("single");
+        single.addActionListener(e -> {
+            nameField.setText("");
+            nameField.setEditable(false);
+        });
         JRadioButton multi = new JRadioButton("multi");
         multi.setActionCommand("multi");
+        multi.addActionListener(e -> {
+            nameField.setEditable(true);
+        });
         ButtonGroup modeBtns = new ButtonGroup();
         modeBtns.add(single);
         modeBtns.add(multi);
 
         JPanel fieldsPanel = new JPanel();
-        fieldsPanel.setLayout(new GridLayout(4, 2, 10, 10));
-        fieldsPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
+        fieldsPanel.setLayout(new GridLayout(5, 2, 10, 10));
+        fieldsPanel.setBorder(new EmptyBorder(10, 20, 10, 20));
         fieldsPanel.add(modeLabel);
         fieldsPanel.add(single);
         fieldsPanel.add(new JPanel());
@@ -84,6 +94,8 @@ public class FTWWindow {
         fieldsPanel.add(cntField);
         fieldsPanel.add(timeLabel);
         fieldsPanel.add(timeField);
+        fieldsPanel.add(nameLabel);
+        fieldsPanel.add(nameField);
 
         final String[] opts = {"Create", "Cancel"};
 
@@ -97,6 +109,7 @@ public class FTWWindow {
         String errorMsg = "";
 
         String mode = modeBtns.getSelection().getActionCommand();
+        String name = nameField.getText().trim();
         int cnt = 0, time = 0;
         try {
             cnt = Integer.parseInt(cntField.getText());
@@ -122,6 +135,7 @@ public class FTWWindow {
         gs.setMulti(mode.equals("multi"));
         gs.setCount(cnt);
         gs.setTime(time);
+        gs.setName(name);
         gs.setDone(true);
     }
 
@@ -135,12 +149,26 @@ public class FTWWindow {
 
         JLabel ipLabel = new JLabel("Host IP", JLabel.RIGHT);
         JTextField ipField = new JTextField(15);
+        JLabel nameLabel = new JLabel("Name", JLabel.RIGHT);
+        JTextField nameField = new JTextField(15);
 
         JPanel fieldsPanel = new JPanel();
-        fieldsPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 0));
-        fieldsPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
-        fieldsPanel.add(ipLabel);
-        fieldsPanel.add(ipField);
+        fieldsPanel.setLayout(new GridBagLayout());
+        fieldsPanel.setBorder(new EmptyBorder(10, 20, 10, 20));
+        GridBagConstraints c = new GridBagConstraints();
+        c.insets = new Insets(0, 5, 0, 5);
+        fieldsPanel.add(ipLabel, c);
+        c.fill = GridBagConstraints.NONE;
+        c.gridx = 1;
+        c.insets = new Insets(0, 5, 5, 0);
+        fieldsPanel.add(ipField, c);
+        c.gridy = 1;
+        c.insets = new Insets(5, 5, 0, 0);
+        fieldsPanel.add(nameField, c);
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridx = 0;
+        c.insets = new Insets(5, 0, 0, 5);
+        fieldsPanel.add(nameLabel, c);
 
         final String[] opts = {"Join", "Cancel"};
 
@@ -152,10 +180,12 @@ public class FTWWindow {
         }
 
         String ip = ipField.getText().trim();
+        String name = nameField.getText().trim();
         frame.setVisible(false);
 
         gs.setJoin(true);
         gs.setIP(ip);
+        gs.setName(name);
         gs.setDone(true);
     }
 }

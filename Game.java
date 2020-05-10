@@ -53,6 +53,18 @@ public abstract class Game {
         window.updateSide(m, flag);
     }
 
+    protected void displayBeginBtn (AtomicBoolean b) {
+        window.displayBeginBtn(b);
+    }
+
+    protected void startGame () {
+        window.startGame();
+    }
+
+    protected void showClose () {
+        window.showClose();
+    }
+
     protected double askQuestion (Problem p) {
         //System.out.print("\033[H\033[2J");
         //System.out.println(p.getQuestion());

@@ -10,9 +10,9 @@ import java.awt.image.*;
 
 public class GameWindow {
     private JFrame frame;
-    private JPanel top, left;
+    private JPanel top, left, bottom;
     private JTextArea right;
-    private JTextField bottom;
+    //private JTextField bottom;
 
     public GameWindow (AtomicBoolean active) {
         System.out.println("started");
@@ -42,23 +42,35 @@ public class GameWindow {
         leftSP.setBorder(new LineBorder(Color.BLACK, 2, true));
         leftSP.getVerticalScrollBar().setUnitIncrement(16);
 
-        right = textArea("Leaderboard\n-----------");
+        right = textArea("");
         right.setBorder(new EmptyBorder(10, 10, 10, 10));
         JScrollPane rightSP = new JScrollPane(right);
         rightSP.setPreferredSize(new Dimension(170, 380));
         rightSP.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         rightSP.setBorder(new LineBorder(Color.BLACK, 2, true));
 
-        bottom = new JTextField(20);
+        /*bottom = new JTextField(25);
         bottom.setEditable(false);
+        bottom.setMaximumSize(bottom.getPreferredSize());
         JPanel temp = new JPanel();
         JLabel answerLabel = new JLabel("Answer", JLabel.RIGHT);
+        exitBtn = new JButton("Close");
+        exitBtn.addActionListener(e -> frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING)));
+        exitBtn.setVisible(false);
         JPanel bottomP = new JPanel();
-        bottomP.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 0));
+        bottomP.setLayout(new BoxLayout(bottomP, BoxLayout.LINE_AXIS));
         bottomP.setPreferredSize(new Dimension(700, 60));
         bottomP.setBorder(border);
         bottomP.add(answerLabel);
+        bottomP.add(Box.createRigidArea(new Dimension(10, 0)));
         bottomP.add(bottom);
+        bottomP.add(new Box.Filler(new Dimension(10, 0), new Dimension(10, 0), new Dimension(700, 0)));
+        bottomP.add(exitBtn);*/
+
+        bottom = new JPanel();
+        bottom.setLayout(new BoxLayout(bottom, BoxLayout.LINE_AXIS));
+        bottom.setPreferredSize(new Dimension(700, 60));
+        bottom.setBorder(border);
 
         JPanel back = new JPanel();
         back.setLayout(new BorderLayout(10, 10));
@@ -66,7 +78,7 @@ public class GameWindow {
         back.add(top, BorderLayout.PAGE_START);
         back.add(leftSP, BorderLayout.CENTER);
         back.add(rightSP, BorderLayout.LINE_END);
-        back.add(bottomP, BorderLayout.PAGE_END);
+        back.add(bottom, BorderLayout.PAGE_END);
 
         frame.add(back);
         frame.pack();
@@ -82,6 +94,33 @@ public class GameWindow {
         top.add(new JLabel(name), BorderLayout.LINE_END);
         top.revalidate();
         top.repaint();
+    }
+
+    public void displayBeginBtn (AtomicBoolean b) {
+        JButton begin = new JButton("Begin");
+        begin.addActionListener(e -> b.set(true));
+        bottom.add(begin);
+        bottom.revalidate();
+        bottom.repaint();
+    }
+
+    public void startGame () {
+        JLabel answerLabel = new JLabel("Answer", JLabel.RIGHT);
+        JTextField text = new JTextField(25);
+        text.setEditable(false);
+        text.setMaximumSize(text.getPreferredSize());
+        JButton close = new JButton("Close");
+        close.addActionListener(e -> frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING)));
+        close.setVisible(false);
+
+        bottom.removeAll();
+        bottom.add(answerLabel);
+        bottom.add(Box.createRigidArea(new Dimension(10, 0)));
+        bottom.add(text);
+        bottom.add(new Box.Filler(new Dimension(10, 0), new Dimension(10, 0), new Dimension(700, 0)));
+        bottom.add(close);
+        bottom.revalidate();
+        bottom.repaint();
     }
 
     public void displayMessage (String m, boolean flag) {
@@ -100,9 +139,10 @@ public class GameWindow {
 
     public void displayProblem (Problem p) {
         displayMessage(p.getQuestion(), true);
-        if (p.getImg() != null) {
+        /*
             try {
-                URL url = new URL(p.getImg());
+                URL url = new URL("https://latex.codecogs.com/png.latex?\\frac{1}{2}");
+                System.out.println(url);
                 BufferedImage image = ImageIO.read(url);
                 JLabel img = new JLabel(new ImageIcon(image.getScaledInstance(200, 200, Image.SCALE_DEFAULT)));
                 left.add(img);
@@ -111,41 +151,46 @@ public class GameWindow {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }
+        */
     }
 
     public void updateSide (String m, boolean flag) {
-        if (flag) {
-
-        } else {
+        if (flag)
+            right.setText(m);
+        else
             right.append("\n" + m);
-        }
     }
 
     public void getResponse (int time, Response r) {
-        bottom.setEditable(true);
+        JTextField text = (JTextField)bottom.getComponent(2);
+        text.setEditable(true);
         r.setSent(System.currentTimeMillis());
         Timer timer = new Timer(time * 1000, e -> {
-            bottom.setText("");
-            bottom.setEditable(false);
+            text.setText("");
+            text.setEditable(false);
             r.setDone(true);
         });
-        bottom.addActionListener(e -> {
-            String s = bottom.getText().trim().toLowerCase();
+        text.addActionListener(e -> {
+            String s = text.getText().trim().toLowerCase();
             if (s.equals(""))
                 return;
             else {
                 System.out.println(s);
                 r.setReceived(System.currentTimeMillis());
                 r.setInput(s);
-                bottom.setText("");
-                bottom.setEditable(false);
+                text.setText("");
+                text.setEditable(false);
                 timer.stop();
                 r.setDone(true);
             }
         });
         timer.setRepeats(false);
         timer.start();
+    }
+
+    public void showClose () {
+        JButton close = (JButton)bottom.getComponent(4);
+        close.setVisible(true);
     }
 
     private JTextArea textArea (String s) {
@@ -157,7 +202,6 @@ public class GameWindow {
         text.setFocusable(false);
         text.setBackground(UIManager.getColor("Label.background"));
         text.setFont(UIManager.getFont("Label.font"));
-        text.setPreferredSize(new Dimension(0, 10));
         return text;
     }
 }

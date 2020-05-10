@@ -16,9 +16,9 @@ public class FTW {
             while (!gs.isDone());
             gs.setFinished(false);
             if (gs.isJoin())
-                joinGame(gs.getIP());
+                joinGame(gs.getIP(), gs.getName());
             else
-                startGame(gs.isMulti(), gs.getCount(), gs.getTime());
+                startGame(gs.isMulti(), gs.getCount(), gs.getTime(), gs.getName());
             gs.setFinished(true);
         }
     }
@@ -27,20 +27,20 @@ public class FTW {
         return ps.getSize();
     }
 
-    public static void startGame (boolean isMulti, int n, int t) throws Exception {
+    public static void startGame (boolean isMulti, int n, int t, String name) throws Exception {
         Game g;
         //GameWindow gw = new GameWindow();
         Problem[] p = ps.getProblems(n);
         if (isMulti)
-            g = new MultiPlayerServer(p, n, t);
+            g = new MultiPlayerServer(p, n, t, name);
         else
             g = new SinglePlayer(p, n, t);
         g.run();
     }
 
-    public static void joinGame (String ip) throws Exception {
+    public static void joinGame (String ip, String name) throws Exception {
         //GameWindow gw = new GameWindow();
-        Game g = new MultiPlayerClient(ip);
+        Game g = new MultiPlayerClient(ip, name);
         g.run();
     }
 

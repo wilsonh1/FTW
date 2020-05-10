@@ -4,6 +4,7 @@ public class GameSettings {
     private AtomicBoolean done, join, multi, finished;
     private AtomicInteger cnt, time;
     private AtomicReference<String> ip;
+    private AtomicReference<String> name;
 
     public GameSettings () {
         done = new AtomicBoolean();
@@ -12,6 +13,7 @@ public class GameSettings {
         cnt = new AtomicInteger();
         time = new AtomicInteger();
         ip = new AtomicReference<String>();
+        name = new AtomicReference<String>();
         finished = new AtomicBoolean(true);
     }
 
@@ -37,6 +39,10 @@ public class GameSettings {
 
     public String getIP () {
         return ip.get();
+    }
+
+    public String getName () {
+        return name.get();
     }
 
     public boolean isFinished () {
@@ -65,6 +71,10 @@ public class GameSettings {
 
     public void setIP (String i) {
         ip.set(i);
+    }
+
+    public void setName (String n) {
+        name.set(n);
     }
 
     public void setFinished (boolean f) {

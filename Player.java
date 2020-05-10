@@ -1,15 +1,25 @@
 public class Player implements Comparable<Player> {
     private int cnt, correct;
     private double time;
+
+    private String ip;
     private String name;
 
-    public Player (int n, String mn) {
+    public Player (int n) {
         cnt = n;
-        name = mn;
+    }
+
+    public Player (String i, String n) {
+        ip = i;
+        name = n;
     }
 
     public void addPoints () {
         correct++;
+    }
+
+    public void addPoints (int x) {
+        correct += x;
     }
 
     public void addTime (double t) {
@@ -20,13 +30,17 @@ public class Player implements Comparable<Player> {
         return name;
     }
 
+    public String getIP () {
+        return ip;
+    }
+
     public int getPoints () {
         return correct;
     }
 
     public int compareTo (Player p) {
         if (correct == p.correct)
-            return name.compareTo(p.name);
+            return ip.compareTo(p.ip);
         return p.correct - correct;
     }
 

@@ -6,12 +6,14 @@ public class SinglePlayer extends Game {
     public SinglePlayer (Problem[] p, int n, int t) {
         super(p, n, t);
         displayName("SinglePlayer");
-        player = new Player(n, null);
+        player = new Player(n);
     }
 
     public void run () throws Exception {
         //System.out.println("EDT " + javax.swing.SwingUtilities.isEventDispatchThread());
+        startGame();
         displayMessage("Starting game...", true);
+        updateSide("Problem results\n--------------", true);
         wait(2500);
         for (int i = 0; i < getCount(); i++) {
             if (!isActive()) {
@@ -33,5 +35,6 @@ public class SinglePlayer extends Game {
             wait(5000);
         }
         displayMessage(player.toString(), true);
+        showClose();
     }
 }

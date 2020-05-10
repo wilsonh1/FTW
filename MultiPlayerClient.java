@@ -6,31 +6,40 @@ public class MultiPlayerClient extends Game {
     private ObjectInputStream ois;
     private ObjectOutputStream oos;
 
-    public MultiPlayerClient (String ip) throws IOException {
+    public MultiPlayerClient (String ip, String name) throws IOException {
         server = new Socket(InetAddress.getByName(ip), 5000);
         InetAddress local = InetAddress.getLocalHost();
+        String address = local.getHostAddress();
         //System.out.println("Name: " + local.getHostName().toLowerCase());
-        displayName(local.getHostName().toLowerCase());
+        String playerName = name + address.replaceAll("^\\d+\\.\\d+\\.\\d+\\.", "");
+        displayName(playerName);
         ois = new ObjectInputStream(server.getInputStream());
         oos = new ObjectOutputStream(server.getOutputStream());
+        oos.writeObject(playerName);
+        oos.flush();
     }
 
     public void run () throws Exception {
-        System.out.println("Waiting for players...");
+        displayMessage("Waiting for players...", true);
         int n = (Integer)ois.readObject();
         int t = (Integer)ois.readObject();
         setTime(t);
-        System.out.println("Starting game...");
+        displayMessage("Starting game...", false);
+        startGame();
+        updateSide("Leaderboard\n-----------", true);
         for (int i = 0; i < n; i++) {
             Problem p = (Problem)ois.readObject();
             oos.writeObject(askQuestion(p));
             oos.flush();
             String m = (String)ois.readObject();
-            System.out.println(m);
-            System.out.println((i < n - 1) ? "Next question..." : "Results...");
+            //System.out.println(m);
+            displayMessage(m, false);
+            String lb = (String)ois.readObject();
+            updateSide(lb, true);
+            displayMessage((i < getCount() - 1) ? "Next question..." : "Results...", false);
         }
         String pr = (String)ois.readObject();
-        System.out.print("\033[H\033[2J");
+        displayMessage(pr, true);
+        showClose();
     }
-
 }
