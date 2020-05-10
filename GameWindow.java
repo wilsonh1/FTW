@@ -10,8 +10,9 @@ import java.awt.image.*;
 
 public class GameWindow {
     private JFrame frame;
-    private JPanel top, left, bottom;
+    private JPanel top, bottom;
     private JTextArea right;
+    private JScrollPane left;
     //private JTextField bottom;
 
     public GameWindow (AtomicBoolean active) {
@@ -33,14 +34,10 @@ public class GameWindow {
         top.setPreferredSize(new Dimension(700, 40));
         top.setBorder(border);
 
-        left = new JPanel();
-        left.setLayout(new BoxLayout(left, BoxLayout.PAGE_AXIS));
-        left.setBorder(new EmptyBorder(10, 10, 10, 10));
-        JScrollPane leftSP = new JScrollPane(left);
-        leftSP.setPreferredSize(new Dimension(520, 380));
-        leftSP.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        leftSP.setBorder(new LineBorder(Color.BLACK, 2, true));
-        leftSP.getVerticalScrollBar().setUnitIncrement(16);
+        left = new JScrollPane(left);
+        left.setPreferredSize(new Dimension(520, 380));
+        left.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        left.setBorder(new LineBorder(Color.BLACK, 2, true));
 
         right = textArea("");
         right.setBorder(new EmptyBorder(10, 10, 10, 10));
@@ -48,24 +45,6 @@ public class GameWindow {
         rightSP.setPreferredSize(new Dimension(170, 380));
         rightSP.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         rightSP.setBorder(new LineBorder(Color.BLACK, 2, true));
-
-        /*bottom = new JTextField(25);
-        bottom.setEditable(false);
-        bottom.setMaximumSize(bottom.getPreferredSize());
-        JPanel temp = new JPanel();
-        JLabel answerLabel = new JLabel("Answer", JLabel.RIGHT);
-        exitBtn = new JButton("Close");
-        exitBtn.addActionListener(e -> frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING)));
-        exitBtn.setVisible(false);
-        JPanel bottomP = new JPanel();
-        bottomP.setLayout(new BoxLayout(bottomP, BoxLayout.LINE_AXIS));
-        bottomP.setPreferredSize(new Dimension(700, 60));
-        bottomP.setBorder(border);
-        bottomP.add(answerLabel);
-        bottomP.add(Box.createRigidArea(new Dimension(10, 0)));
-        bottomP.add(bottom);
-        bottomP.add(new Box.Filler(new Dimension(10, 0), new Dimension(10, 0), new Dimension(700, 0)));
-        bottomP.add(exitBtn);*/
 
         bottom = new JPanel();
         bottom.setLayout(new BoxLayout(bottom, BoxLayout.LINE_AXIS));
@@ -76,7 +55,7 @@ public class GameWindow {
         back.setLayout(new BorderLayout(10, 10));
         back.setBorder(new EmptyBorder(10, 10, 10, 10));
         back.add(top, BorderLayout.PAGE_START);
-        back.add(leftSP, BorderLayout.CENTER);
+        back.add(left, BorderLayout.CENTER);
         back.add(rightSP, BorderLayout.LINE_END);
         back.add(bottom, BorderLayout.PAGE_END);
 
@@ -127,31 +106,65 @@ public class GameWindow {
         JTextArea text;
         if (flag) {
             text = textArea(m);
-            left.removeAll();
-            left.add(text);
-            left.revalidate();
-            left.repaint();
+            left.setViewportView(text);
         } else {
-            text = (JTextArea)left.getComponent(0);
+            text = (JTextArea)left.getViewport().getView();
             text.append("\n\n" + m);
         }
     }
 
-    public void displayProblem (Problem p) {
-        displayMessage(p.getQuestion(), true);
-        /*
-            try {
-                URL url = new URL("https://latex.codecogs.com/png.latex?\\frac{1}{2}");
-                System.out.println(url);
-                BufferedImage image = ImageIO.read(url);
-                JLabel img = new JLabel(new ImageIcon(image.getScaledInstance(200, 200, Image.SCALE_DEFAULT)));
-                left.add(img);
-                left.revalidate();
-                left.repaint();
-            } catch (Exception e) {
-                e.printStackTrace();
+    private String parseProblem (Problem p) {
+        String q = p.getQuestion();
+        System.out.println(UIManager.getFont("Label.font"));
+        String font = UIManager.getFont("Label.font").getFamily();
+        String html = "<html><body style=\"font-family: " + font + ";font-size: 13\"><p>";
+        String t = "", latex = "https://latex.codecogs.com/png.latex?";
+        boolean flag = false;
+        for (int i = 0; i < q.length(); i++) {
+            char c = q.charAt(i);
+            if (c == '\\' && i < q.length() - 1) {
+                char nc = q.charAt(i + 1);
+                if (nc == '(' ) {
+                    flag = true;
+                    t = "";
+                    i++;
+                    continue;
+                } else if (nc == ')') {
+                    flag = false;
+                    html += "<img src=\"" + latex + t + "\" height=\"12\" width=\"auto\">";
+                    i++;
+                    continue;
+                }
             }
-        */
+            if (!flag)
+                html += c;
+            else
+                t += c;
+        }
+        if (p.getImg() != null)
+            html += "</p><p><img src=\"" + p.getImg() + "\" height=\"200\" width=\"auto\">";
+        html += "</p></body></html>";
+        System.out.println(html);
+        return html;
+    }
+
+    public void displayProblem (Problem p, AtomicBoolean b) {
+        String html = parseProblem(p);
+        JTextPane text = new JTextPane();
+        text.setContentType("text/html");
+        text.setOpaque(true);
+        text.setEditable(false);
+        text.setFocusable(false);
+        text.setBackground(UIManager.getColor("Label.background"));
+        text.setBorder(new EmptyBorder(0, 10, 10, 10));
+        text.setText(html);
+
+        Timer timer = new Timer(5 * 1000, e -> {
+            left.setViewportView(text);
+            b.set(true);
+        });
+        timer.setRepeats(false);
+        timer.start();
     }
 
     public void updateSide (String m, boolean flag) {
@@ -202,6 +215,7 @@ public class GameWindow {
         text.setFocusable(false);
         text.setBackground(UIManager.getColor("Label.background"));
         text.setFont(UIManager.getFont("Label.font"));
+        text.setBorder(new EmptyBorder(10, 10, 10, 10));
         return text;
     }
 }

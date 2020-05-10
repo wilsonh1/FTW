@@ -14,7 +14,7 @@ public class SinglePlayer extends Game {
         startGame();
         displayMessage("Starting game...", true);
         updateSide("Problem results\n--------------", true);
-        wait(2500);
+        //wait(2500);
         for (int i = 0; i < getCount(); i++) {
             if (!isActive()) {
                 System.out.println("finished");
@@ -32,8 +32,9 @@ public class SinglePlayer extends Game {
                 updateSide((i+1) + ". x - " + -t + "s", false);
             }
             displayMessage((i < getCount() - 1) ? "Next question..." : "Results...", false);
-            wait(5000);
+            //wait(5000);
         }
+        wait(5000);
         displayMessage(player.toString(), true);
         showClose();
     }
