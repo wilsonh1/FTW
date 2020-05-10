@@ -76,8 +76,6 @@ public class MultiPlayerServer extends Game {
                 e.printStackTrace();
             }
             executor.shutdown();
-            double mn = getTime() + 1;
-            Player first = null;
             TreeMap<Double, Player> responses = new TreeMap<Double, Player>();
             for (int j = 0; j < res.size(); j++) {
                 double t = res.get(j).get();
@@ -92,21 +90,8 @@ public class MultiPlayerServer extends Game {
                         t += 0.0001;
                     responses.put(t, pl);
                 }
-                /*else if (t < mn) {
-                    mn = t;
-                    first = players.get((j == 0) ? hostIP : clients.get(j - 1).getAddress());
-                }*/
             }
             String m = getPoints(responses);
-            /*String m;
-            if (first != null) {
-                leaderboard.remove(first);
-                first.addPoints();
-                leaderboard.add(first);
-                m = "Answered by " + first.getName() + " " + mn + "s";
-            }
-            else
-                m = "Answered by no one";*/
             displayMessage(m, false);
             broadcast(m);
             String lb = "Leaderboard\n-----------\n";
@@ -151,10 +136,10 @@ public class MultiPlayerServer extends Game {
         String m = "";
         for (Map.Entry<Double, Player> entry : responses.entrySet()) {
             Player p = entry.getValue();
-            //System.out.println(p);
-            p.addPoints(points--);
+            p.addPoints(points);
             leaderboard.add(p);
             m += "Answered by " + p.getName() + " " + String.format("%.3f", entry.getKey()) + "s - " + points + " point(s)\n";
+            points--;
         }
         if (m.equals(""))
             m = "Answered by no one";
