@@ -208,8 +208,10 @@ public class GameWindow {
                                 imgCnt++;
                             }
                         }
-                        if (p.getImg() != null)
+                        if (p.getImg() != null) {
+                            doc.insertString(doc.getLength(), "\n\n\n", doc.getStyle("regular"));
                             doc.insertString(doc.getLength(), p.getImg(), doc.getStyle("img" + imgCnt));
+                        }
                     } catch (BadLocationException ex) {
                         ex.printStackTrace();
                     }

@@ -3,7 +3,7 @@ import java.io.*;
 public class FTW {
     private static final String questions = "data/questions.txt";
     private static final String answers = "data/answers.txt";
-    private static final String images = "data/images.txt";
+    private static final String images = "data/images2.txt";
 
     private static ProblemSet ps;
 
