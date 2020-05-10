@@ -4,6 +4,8 @@ import javax.swing.*;
 import javax.swing.border.*;
 import java.util.concurrent.atomic.*;
 
+import java.util.ArrayList;
+import javax.swing.text.*;
 import java.net.URL;
 import javax.imageio.*;
 import java.awt.image.*;
@@ -113,53 +115,101 @@ public class GameWindow {
         }
     }
 
-    private String parseProblem (Problem p) {
+    private ArrayList<String> parseProblem (Problem p) {
         String q = p.getQuestion();
-        System.out.println(UIManager.getFont("Label.font"));
-        String font = UIManager.getFont("Label.font").getFamily();
-        String html = "<html><body style=\"font-family: " + font + ";font-size: 13\"><p>";
-        String t = "", latex = "https://latex.codecogs.com/png.latex?";
-        boolean flag = false;
+        ArrayList<String> res = new ArrayList<String>();
+        String s = "";
         for (int i = 0; i < q.length(); i++) {
             char c = q.charAt(i);
             if (c == '\\' && i < q.length() - 1) {
                 char nc = q.charAt(i + 1);
                 if (nc == '(' ) {
-                    flag = true;
-                    t = "";
-                    i++;
-                    continue;
+                    res.add(s);
+                    s = "";
                 } else if (nc == ')') {
-                    flag = false;
-                    html += "<img src=\"" + latex + t + "\" height=\"12\" width=\"auto\">";
+                    res.add(s);
+                    s = "";
                     i++;
                     continue;
                 }
             }
-            if (!flag)
-                html += c;
-            else
-                t += c;
+            s += c;
         }
-        if (p.getImg() != null)
-            html += "</p><p><img src=\"" + p.getImg() + "\" height=\"200\" width=\"auto\">";
-        html += "</p></body></html>";
-        System.out.println(html);
-        return html;
+        return res;
+    }
+
+    private boolean isLatex (String s) {
+        return (s.length() >= 2 && s.charAt(0) == '\\' && s.charAt(1) == '(');
+    }
+
+    private ImageIcon loadImage (String u) throws Exception {
+        URL url = new URL(u);
+        BufferedImage image = ImageIO.read(url);
+        ImageIcon ic = new ImageIcon(image.getScaledInstance(-1, 12, Image.SCALE_DEFAULT));
+        return ic;
     }
 
     public void displayProblem (Problem p, AtomicBoolean b) {
-        String html = parseProblem(p);
-        JTextPane text = new JTextPane();
-        text.setContentType("text/html");
-        text.setOpaque(true);
-        text.setEditable(false);
-        text.setFocusable(false);
-        text.setBackground(UIManager.getColor("Label.background"));
-        text.setBorder(new EmptyBorder(0, 10, 10, 10));
-        text.setText(html);
+        ArrayList<String> init = parseProblem(p);
+
+        SwingWorker worker = new SwingWorker<ArrayList<ImageIcon>, Void>() {
+            public ArrayList<ImageIcon> doInBackground() throws Exception {
+                ArrayList<ImageIcon> res = new ArrayList<ImageIcon>();
+                for (String s : init) {
+                    if (!isLatex(s))
+                        continue;
+                    res.add(loadImage("https://latex.codecogs.com/png.latex?" + s.substring(2).replaceAll(" ", "%20")));
+                }
+                if (p.getImg() != null)
+                    res.add(loadImage(p.getImg()));
+                return res;
+            }
+        };
+        worker.execute();
 
         Timer timer = new Timer(5 * 1000, e -> {
+            ArrayList<ImageIcon> imgs = new ArrayList<ImageIcon>();
+            try {
+                imgs = (ArrayList<ImageIcon>)worker.get();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+
+            JTextPane text = new JTextPane();
+            text.setContentType("text/html");
+            text.setOpaque(true);
+            text.setEditable(false);
+            text.setFocusable(false);
+            text.setBackground(UIManager.getColor("Label.background"));
+            text.setBorder(new EmptyBorder(10, 10, 10, 10));
+
+
+            StyledDocument doc = text.getStyledDocument();
+            Style regular = doc.addStyle("regular", null);
+            StyleConstants.setFontFamily(regular, UIManager.getFont("Label.font").getFamily());
+            StyleConstants.setFontSize(regular, UIManager.getFont("Label.font").getSize());
+
+            for (int i = 0; i < imgs.size(); i++) {
+                Style style = doc.addStyle("img" + i, null);
+                StyleConstants.setIcon(style, imgs.get(i));
+            }
+
+            int imgCnt = 0;
+            try {
+                for (String s : init) {
+                    if (!isLatex(s))
+                        doc.insertString(doc.getLength(), s, doc.getStyle("regular"));
+                    else {
+                        doc.insertString(doc.getLength(), s, doc.getStyle("img" + imgCnt));
+                        imgCnt++;
+                    }
+                }
+                if (p.getImg() != null)
+                    doc.insertString(doc.getLength(), p.getImg(), doc.getStyle("img" + imgCnt));
+            } catch (BadLocationException ex) {
+                ex.printStackTrace();
+            }
+
             left.setViewportView(text);
             b.set(true);
         });
