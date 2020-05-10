@@ -64,7 +64,6 @@ public class MultiPlayerServer extends Game {
         broadcast(getTime());
         startGame();
         updateSide("Leaderboard\n-----------", true);
-        wait(2500);
         for (int i = 0; i < getCount(); i++) {
             Problem p = getProblemByIndex(i);
             ArrayList<Callable<Double>> tasks = createTasks(p);
@@ -100,8 +99,8 @@ public class MultiPlayerServer extends Game {
             updateSide(lb, true);
             broadcast(lb);
             displayMessage((i < getCount() - 1) ? "Next question..." : "Results...", false);
-            wait(5000);
         }
+        wait(5000);
         HashMap<String, String> results = getResults();
         for (Client c : clients)
             c.sendMessage(results.get(c.getAddress()));

@@ -162,11 +162,11 @@ public class GameWindow {
                     if (!isLatex(s))
                         continue;
                     res.add(loadImage("https://latex.codecogs.com/png.latex?"
-                            + s.substring(2).replaceAll(" ", "%20"), 13));
+                            + s.substring(2).replaceAll(" ", "%20"), -1));
                 }
                 if (p.getImg() != null)
                     res.add(loadImage(p.getImg(), 200));
-                System.out.println(res);
+                //System.out.println(res);
                 return res;
             }
 
@@ -191,7 +191,6 @@ public class GameWindow {
                     StyledDocument doc = text.getStyledDocument();
                     Style regular = doc.addStyle("regular", null);
                     StyleConstants.setFontFamily(regular, UIManager.getFont("Label.font").getFamily());
-                    StyleConstants.setFontSize(regular, UIManager.getFont("Label.font").getSize());
 
                     for (int i = 0; i < imgs.size(); i++) {
                         Style style = doc.addStyle("img" + i, null);

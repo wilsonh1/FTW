@@ -36,7 +36,7 @@ public class MultiPlayerClient extends Game {
             displayMessage(m, false);
             String lb = (String)ois.readObject();
             updateSide(lb, true);
-            displayMessage((i < getCount() - 1) ? "Next question..." : "Results...", false);
+            displayMessage((i < n - 1) ? "Next question..." : "Results...", false);
         }
         String pr = (String)ois.readObject();
         displayMessage(pr, true);
