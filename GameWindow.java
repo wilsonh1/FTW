@@ -142,10 +142,10 @@ public class GameWindow {
         return (s.length() >= 2 && s.charAt(0) == '\\' && s.charAt(1) == '(');
     }
 
-    private ImageIcon loadImage (String u) throws Exception {
+    private ImageIcon loadImage (String u, int height) throws Exception {
         URL url = new URL(u);
         BufferedImage image = ImageIO.read(url);
-        ImageIcon ic = new ImageIcon(image.getScaledInstance(-1, 12, Image.SCALE_DEFAULT));
+        ImageIcon ic = new ImageIcon(image.getScaledInstance(-1, height, Image.SCALE_DEFAULT));
         return ic;
     }
 
@@ -158,10 +158,11 @@ public class GameWindow {
                 for (String s : init) {
                     if (!isLatex(s))
                         continue;
-                    res.add(loadImage("https://latex.codecogs.com/png.latex?" + s.substring(2).replaceAll(" ", "%20")));
+                    res.add(loadImage("https://latex.codecogs.com/png.latex?"
+                                + s.substring(2).replaceAll(" ", "%20"), 13));
                 }
                 if (p.getImg() != null)
-                    res.add(loadImage(p.getImg()));
+                    res.add(loadImage(p.getImg()), 200);
                 return res;
             }
         };
