@@ -43,14 +43,4 @@ public class FTW {
         Game g = new MultiPlayerClient(ip, name);
         g.run();
     }
-
-    public static void prompt () {
-        System.out.print(">>> ");
-    }
-
-    public static void prompt (String s) {
-        System.out.println(s);
-        prompt();
-    }
-
 }
