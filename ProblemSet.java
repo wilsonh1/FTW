@@ -19,6 +19,10 @@ public class ProblemSet {
         }
     }
 
+    public int getSize () {
+        return list.size();
+    }
+
     public Problem[] getProblems (int n) {
         ArrayList<Problem> copy = new ArrayList<Problem>(list);
         Problem[] p = new Problem[n];

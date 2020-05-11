@@ -1,13 +1,22 @@
+import javax.swing.*;//SwingUtilities.*;
+import java.util.concurrent.atomic.*;
+
 public abstract class Game {
     private Problem[] problems;
     private int cnt, time;
+    private int index;
+    private GameWindow window;
+    private AtomicBoolean active;
 
     public Game () {
         cnt = time = -1;
+        active = new AtomicBoolean(true);
+        window = new GameWindow(active);
     }
 
-    public Game (ProblemSet ps, int n, int t) {
-        problems = ps.getProblems(n);
+    public Game (Problem[] p, int n, int t) {
+        this();
+        problems = p;
         cnt = n;
         time = t;
     }
@@ -28,24 +37,61 @@ public abstract class Game {
         return problems[index];
     }
 
-    protected double askQuestion (Problem p) {
-        System.out.print("\033[H\033[2J");
-        System.out.println(p.getQuestion());
-        TimedResponse r = new TimedResponse(time);
-        String input = r.getInput();
-        if (input == null) {
-            System.out.println("Time's up !");
-            return -time;
-        }
-        if (!p.checkAnswer(input)) {
-            System.out.println("Incorrect ! " + r.getTime() + "s");
-            return -r.getTime();
-        }
-        System.out.println("Correct ! " + r.getTime() + "s");
-        return r.getTime();
+    protected boolean isActive () {
+        return active.get();
     }
 
-    abstract String run () throws Exception;
+    protected void displayName (String name) {
+        window.displayName(name);
+    }
+
+    protected void displayMessage (String m, boolean flag) {
+        window.displayMessage(m, flag);
+    }
+
+    protected void updateSide (String m, boolean flag) {
+        window.updateSide(m, flag);
+    }
+
+    protected void displayBeginBtn (AtomicBoolean b) {
+        window.displayBeginBtn(b);
+    }
+
+    protected void startGame () {
+        window.startGame();
+    }
+
+    protected void showClose () {
+        window.showClose();
+    }
+
+    protected double askQuestion (Problem p) {
+        //System.out.print("\033[H\033[2J");
+        //System.out.println(p.getQuestion());
+        AtomicBoolean done = new AtomicBoolean();
+        window.displayProblem(p, done);
+        while (!done.get());
+        //System.out.println("Ask EDT " + javax.swing.SwingUtilities.isEventDispatchThread());
+        Response r = new Response();
+        window.getResponse(time, r);
+        while (!r.isDone());
+        String input = r.getInput(), res;
+        double t;
+        if (input == null) {
+            res = "Time's up !";
+            t = -time;
+        } else if (!p.checkAnswer(input)) {
+            res = "Incorrect ! " + r.getTime() + "s";
+            t = -r.getTime();
+        } else {
+            res = "Correct ! " + r.getTime() + "s";
+            t = r.getTime();
+        }
+        displayMessage(res, true);
+        return t;
+    }
+
+    abstract void run () throws Exception;
 
     protected void wait (int ms) {
         try {

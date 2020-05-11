@@ -1,26 +1,41 @@
+import java.util.*;
+
 public class SinglePlayer extends Game {
     private Player player;
 
-    public SinglePlayer (ProblemSet ps, int n, int t) {
-        super(ps, n, t);
-        player = new Player(n, null);
+    public SinglePlayer (Problem[] p, int n, int t) {
+        super(p, n, t);
+        displayName("SinglePlayer");
+        player = new Player(n);
     }
 
-    public String run () throws Exception {
-        System.out.println("Starting game...");
-        wait(2500);
+    public void run () throws Exception {
+        //System.out.println("EDT " + javax.swing.SwingUtilities.isEventDispatchThread());
+        startGame();
+        displayMessage("Starting game...", true);
+        updateSide("Problem results\n--------------", true);
+        //wait(2500);
         for (int i = 0; i < getCount(); i++) {
+            if (!isActive()) {
+                System.out.println("finished");
+                return;
+            }
             double t = askQuestion(getProblemByIndex(i));
             if (t > 0) {
                 player.addPoints();
                 player.addTime(t);
+                System.out.println(t);
+                updateSide((i+1) + ". * - " + t + "s", false);
             }
-            else
+            else {
                 player.addTime(-t);
-            System.out.println((i < getCount() - 1) ? "Next question..." : "Results...");
-            wait(5000);
+                updateSide((i+1) + ". x - " + -t + "s", false);
+            }
+            displayMessage((i < getCount() - 1) ? "Next question..." : "Results...", false);
+            //wait(5000);
         }
-        System.out.print("\033[H\033[2J");
-        return player.toString();
+        wait(5000);
+        displayMessage(player.toString(), true);
+        showClose();
     }
 }

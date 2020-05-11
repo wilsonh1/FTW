@@ -5,41 +5,42 @@ public class FTW {
     private static final String answers = "data/answers.txt";
     private static final String images = "data/images.txt";
 
+    private static ProblemSet ps;
+
     public static void main (String[] args) throws Exception {
-        ProblemSet ps = new ProblemSet(questions, answers, images);
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        String command = "";
-        while (!command.equals("exit")) {
-            prompt();
-            command = br.readLine();
-            Game g;
-            if (command.equals("new")) {
-                prompt("single / multi - player");
-                String type = br.readLine();
-                prompt("# of problems");
-                int n = Integer.parseInt(br.readLine());
-                prompt("Time per problem");
-                int t = Integer.parseInt(br.readLine());
-                if (type.equals("single"))
-                    g = new SinglePlayer(ps, n, t);
-                else
-                    g = new MultiPlayerServer(ps, n, t);
-                System.out.println(g.run());
-            } else if (command.equals("join")) {
-                prompt("Host IP");
-                String ip = br.readLine();
-                g = new MultiPlayerClient(ip);
-                System.out.println(g.run());
-            }
+        ps = new ProblemSet(questions, answers, images);
+        GameSettings gs = new GameSettings();
+        FTWWindow window = new FTWWindow(gs);
+        while (true) {
+            gs.setDone(false);
+            while (!gs.isDone());
+            gs.setFinished(false);
+            if (gs.isJoin())
+                joinGame(gs.getIP(), gs.getName());
+            else
+                startGame(gs.isMulti(), gs.getCount(), gs.getTime(), gs.getName());
+            gs.setFinished(true);
         }
     }
 
-    public static void prompt () {
-        System.out.print(">>> ");
+    public static int getSize () {
+        return ps.getSize();
     }
 
-    public static void prompt (String s) {
-        System.out.println(s);
-        prompt();
+    public static void startGame (boolean isMulti, int n, int t, String name) throws Exception {
+        Game g;
+        //GameWindow gw = new GameWindow();
+        Problem[] p = ps.getProblems(n);
+        if (isMulti)
+            g = new MultiPlayerServer(p, n, t, name);
+        else
+            g = new SinglePlayer(p, n, t);
+        g.run();
+    }
+
+    public static void joinGame (String ip, String name) throws Exception {
+        //GameWindow gw = new GameWindow();
+        Game g = new MultiPlayerClient(ip, name);
+        g.run();
     }
 }

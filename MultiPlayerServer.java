@@ -2,68 +2,68 @@ import java.util.*;
 import java.net.*;
 import java.io.*;
 import java.util.concurrent.*;
+import java.util.concurrent.atomic.*;
 
 public class MultiPlayerServer extends Game {
     private HashMap<String, Player> players;
     private TreeSet<Player> leaderboard;
 
     private ServerSocket server;
-    private String hostName;
+    private String hostIP;
     private ArrayList<Client> clients;
 
-    public MultiPlayerServer (ProblemSet ps, int n, int t) throws IOException {
-        super(ps, n, t);
+    public MultiPlayerServer (Problem[] p, int n, int t, String name) throws Exception {
+        super(p, n, t);
         players = new HashMap<String, Player>();
         leaderboard = new TreeSet<Player>();
-        InetAddress local = InetAddress.getLocalHost();
-        System.out.println("IP: " + local.getHostAddress());
-        hostName = local.getHostName().toLowerCase();
-        System.out.println("Name: " + hostName);
-        Player hp = new Player(n, hostName);
-        players.put(hostName, hp);
-        leaderboard.add(hp);
+        hostIP = InetAddress.getLocalHost().getHostAddress();
+        displayMessage("IP: " + hostIP, true);
+        String hostName = name + hostIP.replaceAll("^\\d+\\.\\d+\\.\\d+\\.", "");
+        displayName(hostName);
+        addPlayer(hostIP, hostName);
         getPlayers();
     }
 
-    private void getPlayers () throws IOException {
+    private void getPlayers () throws Exception {
         server = new ServerSocket(5000);
         server.setSoTimeout(500);
         clients = new ArrayList<Client>();
-        System.out.println("Waiting for players...");
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        FTW.prompt();
+        displayMessage("Waiting for players...", false);
+        AtomicBoolean b = new AtomicBoolean();
+        displayBeginBtn(b);
         while (true) {
             Socket connection = null;
             try {
                 connection = server.accept();
             } catch (SocketTimeoutException e) {
-                if (br.ready()) {
-                    if (br.readLine().equals("start"))
-                        break;
-                    else
-                        FTW.prompt();
-                }
+                if (b.get())
+                    break;
                 continue;
             } catch (SocketException e) {
                 e.printStackTrace();
             }
             Client c = new Client(connection);
             clients.add(c);
-            System.out.println(c.getName() + " joined");
-            Player cp = new Player(getCount(), c.getName());
-            players.put(c.getName(), cp);
-            leaderboard.add(cp);
-            FTW.prompt();
+            String playerName = (String)c.getMessage();
+            displayMessage(playerName + " joined", false);
+            addPlayer(c.getAddress(), playerName);
         }
     }
 
-    public String run () throws Exception {
-        System.out.println("Starting game...");
-        for (Client c : clients)
-            c.sendMessage(getCount());
-        for (Client c : clients)
-            c.sendMessage(getTime());
-        wait(2500);
+    private void addPlayer (String ip, String name) {
+        if (players.containsKey(ip))
+            return;
+        Player p = new Player(ip, name);
+        players.put(ip, p);
+        leaderboard.add(p);
+    }
+
+    public void run ()  throws Exception {
+        displayMessage("Starting game...", false);
+        broadcast(getCount());
+        broadcast(getTime());
+        startGame();
+        updateSide("Leaderboard\n-----------", true);
         for (int i = 0; i < getCount(); i++) {
             Problem p = getProblemByIndex(i);
             ArrayList<Callable<Double>> tasks = createTasks(p);
@@ -75,42 +75,43 @@ public class MultiPlayerServer extends Game {
                 e.printStackTrace();
             }
             executor.shutdown();
-            double mn = getTime() + 1;
-            Player first = null;
+            TreeMap<Double, Player> responses = new TreeMap<Double, Player>();
             for (int j = 0; j < res.size(); j++) {
                 double t = res.get(j).get();
-                if (t <= 0)
+                if (t < 0)
                     continue;
-                else if (t < mn) {
-                    mn = t;
-                    first = players.get((j == 0) ? hostName : clients.get(j - 1).getName());
+                else {
+                    Player pl = players.get((j == 0) ? hostIP : clients.get(j - 1).getAddress());
+                    if (!leaderboard.contains(pl))
+                        continue;
+                    leaderboard.remove(pl);
+                    if (responses.containsKey(t))
+                        t += 0.0001;
+                    responses.put(t, pl);
                 }
             }
-            String m;
-            if (first != null) {
-                leaderboard.remove(first);
-                first.addPoints();
-                leaderboard.add(first);
-                m = "Answered by " + first.getName() + " " + mn + "s";
-            }
-            else
-                m = "Answered by no one";
-            String lb = "\nLeaderboard\n-----------\n";
+            String m = getPoints(responses);
+            displayMessage(m, false);
+            broadcast(m);
+            String lb = "Leaderboard\n-----------\n";
             for (Player rnk : leaderboard)
                 lb += rnk.getName() + " - " + rnk.getPoints() + " point(s)\n";
-            lb += "-----------\n";
-            System.out.println(m + "\n" + lb);
-            for (Client c : clients)
-                c.sendMessage(m + "\n" + lb);
-            System.out.println((i < getCount() - 1) ? "Next question..." : "Results...");
-            wait(5000);
+            updateSide(lb, true);
+            broadcast(lb);
+            displayMessage((i < getCount() - 1) ? "Next question..." : "Results...", false);
         }
-        System.out.print("\033[H\033[2J");
+        wait(5000);
         HashMap<String, String> results = getResults();
         for (Client c : clients)
-            c.sendMessage(results.get(c.getName()));
+            c.sendMessage(results.get(c.getAddress()));
+        displayMessage(results.get(hostIP), true);
         server.close();
-        return results.get(hostName);
+        showClose();
+    }
+
+    private void broadcast (Object o) throws IOException {
+        for (Client c : clients)
+            c.sendMessage(o);
     }
 
     private ArrayList<Callable<Double>> createTasks (Problem p) throws Exception {
@@ -129,6 +130,21 @@ public class MultiPlayerServer extends Game {
         return tasks;
     }
 
+    private String getPoints (TreeMap<Double, Player> responses) {
+        int points = players.size();
+        String m = "";
+        for (Map.Entry<Double, Player> entry : responses.entrySet()) {
+            Player p = entry.getValue();
+            p.addPoints(points);
+            leaderboard.add(p);
+            m += "Answered by " + p.getName() + " " + String.format("%.3f", entry.getKey()) + "s - " + points + " point(s)\n";
+            points--;
+        }
+        if (m.equals(""))
+            m = "Answered by no one";
+        return m.trim();
+    }
+
     private HashMap<String, String> getResults () {
         HashMap<String, String> res = new HashMap<String, String>();
         int rank = 0, pre = -1;
@@ -137,26 +153,26 @@ public class MultiPlayerServer extends Game {
                 rank++;
                 pre = p.getPoints();
             }
-            res.put(p.getName(), p.toString() + "\nRank: " + rank);
+            res.put(p.getIP(), p.toString() + "\nRank: " + rank);
         }
         return res;
     }
 
     private class Client {
         private Socket connection;
-        private String name;
+        private String address;
         private ObjectOutputStream oos;
         private ObjectInputStream ois;
 
         private Client (Socket c) throws IOException {
             connection = c;
-            name = c.getInetAddress().getHostName().toLowerCase();
+            address = c.getInetAddress().getHostAddress();
             oos = new ObjectOutputStream(c.getOutputStream());
             ois = new ObjectInputStream(c.getInputStream());
         }
 
-        private String getName () {
-            return name;
+        private String getAddress () {
+            return address;
         }
 
         private void sendMessage (Object o) throws IOException {
@@ -164,8 +180,14 @@ public class MultiPlayerServer extends Game {
             oos.flush();
         }
 
-        private Object getMessage () throws Exception {
-            return ois.readObject();
+        private Object getMessage () {
+            Object m = null;
+            try {
+                m = ois.readObject();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return m;
         }
     }
 }
