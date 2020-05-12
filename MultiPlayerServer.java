@@ -85,8 +85,8 @@ public class MultiPlayerServer extends Game {
                     if (!leaderboard.contains(pl))
                         continue;
                     leaderboard.remove(pl);
-                    if (responses.containsKey(t))
-                        t += 0.0001;
+                    while (responses.containsKey(t))
+                        t += 0.00001;
                     responses.put(t, pl);
                 }
             }
