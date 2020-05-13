@@ -115,31 +115,6 @@ public class GameWindow {
         }
     }
 
-    private ArrayList<String> parseProblem (Problem p) {
-        String q = p.getQuestion();
-        ArrayList<String> res = new ArrayList<String>();
-        String s = "";
-        for (int i = 0; i < q.length(); i++) {
-            char c = q.charAt(i);
-            if (c == '\\' && i < q.length() - 1) {
-                char nc = q.charAt(i + 1);
-                if (nc == '(' ) {
-                    res.add(s);
-                    s = "";
-                } else if (nc == ')') {
-                    res.add(s);
-                    s = "";
-                    i++;
-                    continue;
-                }
-            }
-            s += c;
-        }
-        if (!s.equals(""))
-            res.add(s);
-        return res;
-    }
-
     private boolean isLatex (String s) {
         return (s.length() >= 2 && s.charAt(0) == '\\' && s.charAt(1) == '(');
     }
@@ -147,12 +122,24 @@ public class GameWindow {
     private ImageIcon loadImage (String u, int height) throws Exception {
         URL url = new URL(u);
         BufferedImage image = ImageIO.read(url);
-        ImageIcon ic = new ImageIcon(image.getScaledInstance(-1, height, Image.SCALE_DEFAULT));
+        ImageIcon ic;
+        if (height == -1)
+            ic = new ImageIcon(image);
+        else {
+            int width = -1;
+            if (image.getWidth() * height / image.getHeight() > 350) {
+                width = 350;
+                height = -1;
+            }
+            ic = new ImageIcon(image.getScaledInstance(width, height, Image.SCALE_DEFAULT));
+            System.out.println("Scaled " + ic.getIconWidth() + " " + ic.getIconHeight());
+        }
+        //ImageIcon ic = new ImageIcon(image.getScaledInstance(width, Math.min(height, image.getHeight()), Image.SCALE_DEFAULT));
         return ic;
     }
 
     public void displayProblem (Problem p, AtomicBoolean b) {
-        ArrayList<String> init = parseProblem(p);
+        ArrayList<String> init = p.parse();
         System.out.println(p.getQuestion());
 
         SwingWorker worker = new SwingWorker<ArrayList<ImageIcon>, Void>() {
@@ -166,7 +153,7 @@ public class GameWindow {
                 }
                 if (p.getImg() != null)
                     res.add(loadImage(p.getImg(), 200));
-                //System.out.println(res);
+                System.out.println(res);
                 return res;
             }
 
@@ -178,7 +165,6 @@ public class GameWindow {
                     } catch (Exception ex) {
                         ex.printStackTrace();
                     }
-                    System.out.println(imgs);
 
                     JTextPane text = new JTextPane();
                     text.setContentType("text/html");
