@@ -10,10 +10,6 @@ public class Problem implements Serializable {
         imgURL = i;
     }
 
-    public String getQuestion () {
-        return question;
-    }
-
     public String getImg () {
         return imgURL;
     }

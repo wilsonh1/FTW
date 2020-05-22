@@ -15,7 +15,6 @@ public class GameWindow {
     private JPanel top, bottom;
     private JTextArea right;
     private JScrollPane left;
-    //private JTextField bottom;
 
     public GameWindow (AtomicBoolean active) {
         System.out.println("started");
@@ -134,13 +133,11 @@ public class GameWindow {
             ic = new ImageIcon(image.getScaledInstance(width, height, Image.SCALE_DEFAULT));
             System.out.println("Scaled " + ic.getIconWidth() + " " + ic.getIconHeight());
         }
-        //ImageIcon ic = new ImageIcon(image.getScaledInstance(width, Math.min(height, image.getHeight()), Image.SCALE_DEFAULT));
         return ic;
     }
 
     public void displayProblem (Problem p, AtomicBoolean b) {
         ArrayList<String> init = p.parse();
-        System.out.println(p.getQuestion());
 
         SwingWorker worker = new SwingWorker<ArrayList<ImageIcon>, Void>() {
             public ArrayList<ImageIcon> doInBackground() throws Exception {

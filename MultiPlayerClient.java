@@ -10,7 +10,6 @@ public class MultiPlayerClient extends Game {
         server = new Socket(InetAddress.getByName(ip), 5000);
         InetAddress local = InetAddress.getLocalHost();
         String address = local.getHostAddress();
-        //System.out.println("Name: " + local.getHostName().toLowerCase());
         String playerName = name + address.replaceAll("^\\d+\\.\\d+\\.\\d+\\.", "");
         displayName(playerName);
         ois = new ObjectInputStream(server.getInputStream());
@@ -28,11 +27,14 @@ public class MultiPlayerClient extends Game {
         startGame();
         updateSide("Leaderboard\n-----------", true);
         for (int i = 0; i < n; i++) {
+            if (!isActive()) {
+                server.close();
+                return;
+            }
             Problem p = (Problem)ois.readObject();
             oos.writeObject(askQuestion(p));
             oos.flush();
             String m = (String)ois.readObject();
-            //System.out.println(m);
             displayMessage(m, false);
             String lb = (String)ois.readObject();
             updateSide(lb, true);

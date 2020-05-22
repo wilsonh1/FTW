@@ -29,7 +29,6 @@ public class FTW {
 
     public static void startGame (boolean isMulti, int n, int t, String name) throws Exception {
         Game g;
-        //GameWindow gw = new GameWindow();
         Problem[] p = ps.getProblems(n);
         if (isMulti)
             g = new MultiPlayerServer(p, n, t, name);
@@ -38,9 +37,13 @@ public class FTW {
         g.run();
     }
 
-    public static void joinGame (String ip, String name) throws Exception {
-        //GameWindow gw = new GameWindow();
+    public static void joinGame (String ip, String name) throws IOException {
         Game g = new MultiPlayerClient(ip, name);
-        g.run();
+        try {
+            g.run();
+        } catch (Exception e) {
+            g.displayMessage("Disconnected from host", true);
+            g.showClose();
+        }
     }
 }

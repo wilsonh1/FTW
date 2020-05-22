@@ -39,8 +39,6 @@ public class MultiPlayerServer extends Game {
                 if (b.get())
                     break;
                 continue;
-            } catch (SocketException e) {
-                e.printStackTrace();
             }
             Client c = new Client(connection);
             clients.add(c);
@@ -65,15 +63,14 @@ public class MultiPlayerServer extends Game {
         startGame();
         updateSide("Leaderboard\n-----------", true);
         for (int i = 0; i < getCount(); i++) {
+            if (!isActive()) {
+                server.close();
+                return;
+            }
             Problem p = getProblemByIndex(i);
             ArrayList<Callable<Double>> tasks = createTasks(p);
             ExecutorService executor = Executors.newFixedThreadPool(clients.size() + 1);
-            List<Future<Double>> res = null;
-            try {
-                res = executor.invokeAll(tasks);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            List<Future<Double>> res = executor.invokeAll(tasks);
             executor.shutdown();
             TreeMap<Double, Player> responses = new TreeMap<Double, Player>();
             for (int j = 0; j < res.size(); j++) {
@@ -100,7 +97,7 @@ public class MultiPlayerServer extends Game {
             broadcast(lb);
             displayMessage((i < getCount() - 1) ? "Next question..." : "Results...", false);
         }
-        wait(5000);
+        Thread.sleep(5000);
         HashMap<String, String> results = getResults();
         for (Client c : clients)
             c.sendMessage(results.get(c.getAddress()));
@@ -109,12 +106,12 @@ public class MultiPlayerServer extends Game {
         showClose();
     }
 
-    private void broadcast (Object o) throws IOException {
+    private void broadcast (Object o) {
         for (Client c : clients)
             c.sendMessage(o);
     }
 
-    private ArrayList<Callable<Double>> createTasks (Problem p) throws Exception {
+    private ArrayList<Callable<Double>> createTasks (Problem p) {
         ArrayList<Callable<Double>> tasks = new ArrayList<Callable<Double>>();
         Callable<Double> hostInput = () -> {
             return askQuestion(p);
@@ -123,7 +120,10 @@ public class MultiPlayerServer extends Game {
         for (Client c : clients) {
             Callable<Double> clientInput = () -> {
                 c.sendMessage(p);
-                return (Double)c.getMessage();
+                Object r = c.getMessage();
+                if (r == null)
+                    return -1.0;
+                return (Double)r;
             };
             tasks.add(clientInput);
         }
@@ -137,7 +137,7 @@ public class MultiPlayerServer extends Game {
             Player p = entry.getValue();
             p.addPoints(points);
             leaderboard.add(p);
-            m += "Answered by " + p.getName() + " " + String.format("%.3f", entry.getKey()) + "s - " + points + " point(s)\n";
+            m += "Answered by " + p.getName() + " - " + String.format("%.3f", entry.getKey()) + "s + " + points + " point(s)\n";
             points--;
         }
         if (m.equals(""))
@@ -175,19 +175,21 @@ public class MultiPlayerServer extends Game {
             return address;
         }
 
-        private void sendMessage (Object o) throws IOException {
-            oos.writeObject(o);
-            oos.flush();
+        private void sendMessage (Object o) {
+            try {
+                oos.writeObject(o);
+                oos.flush();
+            } catch (Exception e) {
+                return;
+            }
         }
 
         private Object getMessage () {
-            Object m = null;
             try {
-                m = ois.readObject();
+                return ois.readObject();
             } catch (Exception e) {
-                e.printStackTrace();
+                return null;
             }
-            return m;
         }
     }
 }
