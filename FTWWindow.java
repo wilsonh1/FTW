@@ -51,8 +51,6 @@ public class FTWWindow {
     }
 
     private void newGame () {
-        System.out.println("new");
-
         if (!gs.isFinished()) {
             JOptionPane.showMessageDialog(frame, "Wait for current game to finish", "Game creation failed", JOptionPane.ERROR_MESSAGE);
             return;
@@ -102,7 +100,6 @@ public class FTWWindow {
         if (JOptionPane.showOptionDialog(frame, fieldsPanel, "New game",
             JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null,
             opts, opts[0]) != 0) {
-            System.out.println("cancel");
             return;
         }
 
@@ -140,8 +137,6 @@ public class FTWWindow {
     }
 
     private void joinGame () {
-        System.out.println("join");
-
         if (!gs.isFinished()) {
             JOptionPane.showMessageDialog(frame, "Wait for current game to finish", "Game creation failed", JOptionPane.ERROR_MESSAGE);
             return;
@@ -175,7 +170,6 @@ public class FTWWindow {
         if (JOptionPane.showOptionDialog(frame, fieldsPanel, "New game",
             JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null,
             opts, opts[0]) != 0) {
-            System.out.println("cancel");
             return;
         }
 

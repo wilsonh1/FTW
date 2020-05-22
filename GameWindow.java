@@ -17,7 +17,6 @@ public class GameWindow {
     private JScrollPane left;
 
     public GameWindow (AtomicBoolean active) {
-        System.out.println("started");
         frame = new JFrame("FTW");
         frame.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
@@ -131,7 +130,6 @@ public class GameWindow {
                 height = -1;
             }
             ic = new ImageIcon(image.getScaledInstance(width, height, Image.SCALE_DEFAULT));
-            System.out.println("Scaled " + ic.getIconWidth() + " " + ic.getIconHeight());
         }
         return ic;
     }
@@ -150,7 +148,6 @@ public class GameWindow {
                 }
                 if (p.getImg() != null)
                     res.add(loadImage(p.getImg(), 200));
-                System.out.println(res);
                 return res;
             }
 
@@ -229,7 +226,6 @@ public class GameWindow {
             if (s.equals(""))
                 return;
             else {
-                System.out.println(s);
                 r.setReceived(System.currentTimeMillis());
                 r.setInput(s);
                 text.setText("");

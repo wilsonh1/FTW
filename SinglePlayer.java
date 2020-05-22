@@ -20,7 +20,6 @@ public class SinglePlayer extends Game {
             if (t > 0) {
                 player.addPoints();
                 player.addTime(t);
-                System.out.println(t);
                 updateSide((i+1) + ". * - " + t + "s", false);
             } else {
                 player.addTime(-t);
