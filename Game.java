@@ -1,10 +1,9 @@
-import javax.swing.*;//SwingUtilities.*;
+import javax.swing.*;
 import java.util.concurrent.atomic.*;
 
 public abstract class Game {
     private Problem[] problems;
     private int cnt, time;
-    private int index;
     private GameWindow window;
     private AtomicBoolean active;
 
