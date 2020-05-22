@@ -1,5 +1,3 @@
-import java.util.*;
-
 public class SinglePlayer extends Game {
     private Player player;
 

@@ -17,6 +17,9 @@ public class ProblemSet {
             else
                 list.add(new Problem(question, bra.readLine(), imgURL));
         }
+        brq.close();
+        bra.close();
+        bri.close();
     }
 
     public int getSize () {

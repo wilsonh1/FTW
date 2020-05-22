@@ -159,13 +159,11 @@ public class MultiPlayerServer extends Game {
     }
 
     private class Client {
-        private Socket connection;
         private String address;
         private ObjectOutputStream oos;
         private ObjectInputStream ois;
 
         private Client (Socket c) throws IOException {
-            connection = c;
             address = c.getInetAddress().getHostAddress();
             oos = new ObjectOutputStream(c.getOutputStream());
             ois = new ObjectInputStream(c.getInputStream());

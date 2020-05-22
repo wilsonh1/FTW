@@ -1,4 +1,3 @@
-import javax.swing.*;
 import java.util.concurrent.atomic.*;
 
 public abstract class Game {
