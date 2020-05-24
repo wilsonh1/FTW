@@ -43,20 +43,20 @@ public abstract class Game {
         window.displayName(name);
     }
 
-    protected void displayMessage (String m, boolean flag) {
-        window.displayMessage(m, flag);
-    }
-
-    protected void updateSide (String m, boolean flag) {
-        window.updateSide(m, flag);
-    }
-
     protected void showBeginBtn (AtomicBoolean b) {
         window.showBeginBtn(b);
     }
 
     protected void startGame () {
         window.startGame();
+    }
+
+    protected void displayMessage (String m, boolean flag) {
+        window.displayMessage(m, flag);
+    }
+
+    protected void updateSide (String m, boolean flag) {
+        window.updateSide(m, flag);
     }
 
     protected void showClose () {

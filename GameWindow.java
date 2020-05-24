@@ -134,7 +134,7 @@ public class GameWindow {
     public void displayProblem (Problem p, AtomicBoolean b) {
         ArrayList<String> init = p.parse();
 
-        SwingWorker worker = new SwingWorker<ArrayList<ImageIcon>, Void>() {
+        SwingWorker<ArrayList<ImageIcon>, Void> worker = new SwingWorker<ArrayList<ImageIcon>, Void>() {
             public ArrayList<ImageIcon> doInBackground() throws Exception {
                 ArrayList<ImageIcon> res = new ArrayList<ImageIcon>();
                 for (String s : init) {
