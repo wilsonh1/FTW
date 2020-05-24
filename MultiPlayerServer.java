@@ -87,7 +87,7 @@ public class MultiPlayerServer extends Game {
                     responses.put(t, pl);
                 }
             }
-            String m = getPoints(responses);
+            String m = assignPoints(responses);
             displayMessage(m, false);
             broadcast(m);
             String lb = "Leaderboard\n-----------\n";
@@ -130,7 +130,7 @@ public class MultiPlayerServer extends Game {
         return tasks;
     }
 
-    private String getPoints (TreeMap<Double, Player> responses) {
+    private String assignPoints (TreeMap<Double, Player> responses) {
         int points = players.size();
         String m = "";
         for (Map.Entry<Double, Player> entry : responses.entrySet()) {
