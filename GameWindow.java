@@ -75,7 +75,7 @@ public class GameWindow {
         top.repaint();
     }
 
-    public void displayBeginBtn (AtomicBoolean b) {
+    public void showBeginBtn (AtomicBoolean b) {
         JButton begin = new JButton("Begin");
         begin.addActionListener(e -> b.set(true));
         bottom.add(begin);

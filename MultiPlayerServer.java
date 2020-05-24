@@ -30,7 +30,7 @@ public class MultiPlayerServer extends Game {
         clients = new ArrayList<Client>();
         displayMessage("Waiting for players...", false);
         AtomicBoolean b = new AtomicBoolean();
-        displayBeginBtn(b);
+        showBeginBtn(b);
         while (true) {
             Socket connection = null;
             try {

@@ -51,8 +51,8 @@ public abstract class Game {
         window.updateSide(m, flag);
     }
 
-    protected void displayBeginBtn (AtomicBoolean b) {
-        window.displayBeginBtn(b);
+    protected void showBeginBtn (AtomicBoolean b) {
+        window.showBeginBtn(b);
     }
 
     protected void startGame () {
