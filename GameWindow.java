@@ -20,6 +20,7 @@ public class GameWindow {
         frame = new JFrame("FTW");
         frame.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
+                frame.dispose();
                 active.set(false);
                 FTWWindow.show();
             }
@@ -63,10 +64,6 @@ public class GameWindow {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
-    }
-
-    public void dispose () {
-        frame.dispose();
     }
 
     public void displayName (String name) {
