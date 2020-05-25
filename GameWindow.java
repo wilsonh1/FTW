@@ -152,7 +152,7 @@ public class GameWindow {
                 Timer timer = new Timer(5000, e -> {
                     ArrayList<ImageIcon> imgs = new ArrayList<ImageIcon>();
                     try {
-                        imgs = (ArrayList<ImageIcon>)get();
+                        imgs = get();
                     } catch (Exception ex) {
                         ex.printStackTrace();
                     }
