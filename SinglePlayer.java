@@ -10,7 +10,7 @@ public class SinglePlayer extends Game {
     public void run () throws Exception {
         startGame();
         displayMessage("Starting game...", true);
-        updateSide("Problem results\n--------------", true);
+        updateSide("Problem results (" + getCount() + ")\n--------------", true);
         for (int i = 0; i < getCount(); i++) {
             if (!isActive())
                 return;

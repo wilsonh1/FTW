@@ -61,7 +61,7 @@ public class MultiPlayerServer extends Game {
         broadcast(getCount());
         broadcast(getTime());
         startGame();
-        updateSide("Leaderboard\n-----------", true);
+        updateSide("Leaderboard (" + getCount() + ")\n-----------", true);
         for (int i = 0; i < getCount(); i++) {
             if (!isActive()) {
                 server.close();
@@ -90,7 +90,7 @@ public class MultiPlayerServer extends Game {
             String m = assignPoints(responses);
             displayMessage(m, false);
             broadcast(m);
-            StringBuffer lb = new StringBuffer("Leaderboard\n-----------\n");
+            StringBuffer lb = new StringBuffer("Leaderboard (" + (i + 1) + "/" + getCount() + ")\n-----------\n");
             for (Player rnk : leaderboard)
                 lb.append(rnk.getName() + " - " + rnk.getPoints() + " point(s)\n");
             String lbs = lb.toString().trim();

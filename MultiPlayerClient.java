@@ -25,7 +25,7 @@ public class MultiPlayerClient extends Game {
         setTime(t);
         displayMessage("Starting game...", false);
         startGame();
-        updateSide("Leaderboard\n-----------", true);
+        updateSide("Leaderboard (" + n + ")\n-----------", true);
         for (int i = 0; i < n; i++) {
             if (!isActive()) {
                 server.close();
