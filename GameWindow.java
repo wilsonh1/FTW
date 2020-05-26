@@ -231,9 +231,9 @@ public class GameWindow {
         Timer countdown = new Timer(1000, e -> {
             int t = Integer.parseInt(timeLabel.getText()) - 1;
             timeLabel.setText(t + "");
+            top.revalidate();
             if (t == 0)
                 ((Timer)e.getSource()).stop();
-            top.revalidate();
         });
 
         JTextField text = (JTextField)bottom.getComponent(2);
@@ -259,8 +259,8 @@ public class GameWindow {
             }
         });
         timer.setRepeats(false);
-        timer.start();
         countdown.start();
+        timer.start();
     }
 
     private JTextArea textArea (String s) {
