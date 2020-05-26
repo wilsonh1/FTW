@@ -26,7 +26,7 @@ public class SinglePlayer extends Game {
             displayMessage((i < getCount() - 1) ? "Next question..." : "Results...", false);
         }
         Thread.sleep(5000);
-        clearCountdown();
+        removeCountdown();
         displayMessage(player.toString(), true);
         showClose();
     }

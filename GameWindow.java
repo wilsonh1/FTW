@@ -110,6 +110,18 @@ public class GameWindow {
         }
     }
 
+    public void updateSide (String m, boolean flag) {
+        if (flag)
+            right.setText(m);
+        else
+            right.append("\n" + m);
+    }
+
+    public void showClose () {
+        JButton close = (JButton)bottom.getComponent(4);
+        close.setVisible(true);
+    }
+
     private boolean isLatex (String s) {
         return (s.length() >= 2 && s.charAt(0) == '\\' && s.charAt(1) == '(');
     }
@@ -202,14 +214,7 @@ public class GameWindow {
         worker.execute();
     }
 
-    public void updateSide (String m, boolean flag) {
-        if (flag)
-            right.setText(m);
-        else
-            right.append("\n" + m);
-    }
-
-    public void clearCountdown () {
+    public void removeCountdown () {
         BorderLayout bl = (BorderLayout)top.getLayout();
         Component timeLabel = bl.getLayoutComponent(BorderLayout.LINE_START);
         if (timeLabel != null) {
@@ -256,11 +261,6 @@ public class GameWindow {
         timer.setRepeats(false);
         timer.start();
         countdown.start();
-    }
-
-    public void showClose () {
-        JButton close = (JButton)bottom.getComponent(4);
-        close.setVisible(true);
     }
 
     private JTextArea textArea (String s) {

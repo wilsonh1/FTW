@@ -41,7 +41,7 @@ public class MultiPlayerClient extends Game {
             displayMessage((i < n - 1) ? "Next question..." : "Results...", false);
         }
         String pr = (String)ois.readObject();
-        clearCountdown();
+        removeCountdown();
         displayMessage(pr, true);
         showClose();
     }

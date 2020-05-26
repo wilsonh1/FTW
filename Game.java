@@ -63,8 +63,8 @@ public abstract class Game {
         window.showClose();
     }
 
-    protected void clearCountdown () {
-        window.clearCountdown();
+    protected void removeCountdown () {
+        window.removeCountdown();
     }
 
     protected double askQuestion (Problem p) {
@@ -72,7 +72,7 @@ public abstract class Game {
         window.displayProblem(p, done);
         while (!done.get());
         Response r = new Response();
-        clearCountdown();
+        removeCountdown();
         window.getResponse(time, r);
         while (!r.isDone());
         String input = r.getInput(), res;
