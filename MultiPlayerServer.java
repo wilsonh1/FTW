@@ -90,11 +90,12 @@ public class MultiPlayerServer extends Game {
             String m = assignPoints(responses);
             displayMessage(m, false);
             broadcast(m);
-            String lb = "Leaderboard\n-----------\n";
+            StringBuffer lb = new StringBuffer("Leaderboard\n-----------\n");
             for (Player rnk : leaderboard)
-                lb += rnk.getName() + " - " + rnk.getPoints() + " point(s)\n";
-            updateSide(lb, true);
-            broadcast(lb);
+                lb.append(rnk.getName() + " - " + rnk.getPoints() + " point(s)\n");
+            String lbs = lb.toString().trim();
+            updateSide(lbs, true);
+            broadcast(lbs);
             displayMessage((i < getCount() - 1) ? "Next question..." : "Results...", false);
         }
         Thread.sleep(5000);
@@ -132,17 +133,17 @@ public class MultiPlayerServer extends Game {
 
     private String assignPoints (TreeMap<Double, Player> responses) {
         int points = players.size();
-        String m = "";
+        StringBuffer m = new StringBuffer();
         for (Map.Entry<Double, Player> entry : responses.entrySet()) {
             Player p = entry.getValue();
             p.addPoints(points);
             leaderboard.add(p);
-            m += "Answered by " + p.getName() + " - " + String.format("%.3f", entry.getKey()) + "s + " + points + " point(s)\n";
+            m.append("Answered by " + p.getName() + " - " + String.format("%.3f", entry.getKey()) + "s + " + points + " point(s)\n");
             points--;
         }
-        if (m.equals(""))
-            m = "Answered by no one";
-        return m.trim();
+        if (m.length() == 0)
+            return "Answered by no one";
+        return m.toString().trim();
     }
 
     private HashMap<String, String> getResults () {
