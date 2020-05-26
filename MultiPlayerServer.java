@@ -102,6 +102,7 @@ public class MultiPlayerServer extends Game {
         HashMap<String, String> results = getResults();
         for (Client c : clients)
             c.sendMessage(results.get(c.getAddress()));
+        clearCountdown();
         displayMessage(results.get(hostIP), true);
         server.close();
         showClose();

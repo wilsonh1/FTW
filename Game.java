@@ -63,11 +63,16 @@ public abstract class Game {
         window.showClose();
     }
 
+    protected void clearCountdown () {
+        window.clearCountdown();
+    }
+
     protected double askQuestion (Problem p) {
         AtomicBoolean done = new AtomicBoolean();
         window.displayProblem(p, done);
         while (!done.get());
         Response r = new Response();
+        clearCountdown();
         window.getResponse(time, r);
         while (!r.isDone());
         String input = r.getInput(), res;

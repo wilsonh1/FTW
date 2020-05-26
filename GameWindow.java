@@ -209,7 +209,28 @@ public class GameWindow {
             right.append("\n" + m);
     }
 
+    public void clearCountdown () {
+        BorderLayout bl = (BorderLayout)top.getLayout();
+        Component timeLabel = bl.getLayoutComponent(BorderLayout.LINE_START);
+        if (timeLabel != null) {
+            top.remove(timeLabel);
+            top.revalidate();
+            top.repaint();
+        }
+    }
+
     public void getResponse (int time, Response r) {
+        JLabel timeLabel = new JLabel(time + "");
+        top.add(timeLabel, BorderLayout.LINE_START);
+        top.revalidate();
+        Timer countdown = new Timer(1000, e -> {
+            int t = Integer.parseInt(timeLabel.getText()) - 1;
+            timeLabel.setText(t + "");
+            if (t == 0)
+                ((Timer)e.getSource()).stop();
+            top.revalidate();
+        });
+
         JTextField text = (JTextField)bottom.getComponent(2);
         text.setEditable(true);
         r.setSent(System.currentTimeMillis());
@@ -228,11 +249,13 @@ public class GameWindow {
                 text.setText("");
                 text.setEditable(false);
                 timer.stop();
+                countdown.stop();
                 r.setDone(true);
             }
         });
         timer.setRepeats(false);
         timer.start();
+        countdown.start();
     }
 
     public void showClose () {
