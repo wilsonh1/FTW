@@ -48,6 +48,6 @@ public class Player implements Comparable<Player> {
         String s = "Results\n-------\n";
         if (name != null)
             return s + "Points: " + correct;
-        return s + "Accuracy: " + String.format("%.2f%%\n", correct * 100.0 / cnt) + "Average time: " + String.format("%.2fs", time / cnt);
+        return s + "Accuracy: " + String.format("%.2f%%\n", correct * 100.0 / cnt) + "Average time: " + String.format("%.3fs", time / cnt);
     }
 }

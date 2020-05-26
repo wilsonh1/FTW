@@ -18,10 +18,10 @@ public class SinglePlayer extends Game {
             if (t > 0) {
                 player.addPoints();
                 player.addTime(t);
-                updateSide((i+1) + ". * - " + t + "s", false);
+                updateSide((i + 1) + ". * - " + String.format("%.3fs", t), false);
             } else {
                 player.addTime(-t);
-                updateSide((i+1) + ". x - " + -t + "s", false);
+                updateSide((i + 1) + ". x - " + String.format("%.3fs", -t), false);
             }
             displayMessage((i < getCount() - 1) ? "Next question..." : "Results...", false);
         }

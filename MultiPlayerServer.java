@@ -138,7 +138,7 @@ public class MultiPlayerServer extends Game {
             Player p = entry.getValue();
             p.addPoints(points);
             leaderboard.add(p);
-            m.append("Answered by " + p.getName() + " - " + String.format("%.3f", entry.getKey()) + "s + " + points + " point(s)\n");
+            m.append("Answered by " + p.getName() + " - " + String.format("%.3fs", entry.getKey()) + " + " + points + " point(s)\n");
             points--;
         }
         if (m.length() == 0)

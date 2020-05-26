@@ -76,10 +76,10 @@ public abstract class Game {
             res = "Time's up !";
             t = -time;
         } else if (!p.checkAnswer(input)) {
-            res = "Incorrect ! " + r.getTime() + "s";
+            res = "Incorrect ! " + String.format("%.3fs", r.getTime());
             t = -r.getTime();
         } else {
-            res = "Correct ! " + r.getTime() + "s";
+            res = "Correct ! " + String.format("%.3fs", r.getTime());
             t = r.getTime();
         }
         displayMessage(res, true);

@@ -22,7 +22,7 @@ public class GameWindow {
             public void windowClosing(WindowEvent e) {
                 frame.dispose();
                 active.set(false);
-                FTWWindow.show();
+                FTW.show();
             }
         });
 

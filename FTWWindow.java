@@ -4,7 +4,7 @@ import javax.swing.border.*;
 
 public class FTWWindow {
     private GameSettings gs;
-    private static JFrame frame;
+    private JFrame frame;
 
     public FTWWindow (GameSettings g) {
         gs = g;
@@ -45,7 +45,7 @@ public class FTWWindow {
         frame.setVisible(true);
     }
 
-    public static void show () {
+    public void show () {
         frame.setVisible(true);
     }
 

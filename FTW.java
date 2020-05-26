@@ -6,11 +6,12 @@ public class FTW {
     private static final String images = "data/images.txt";
 
     private static ProblemSet ps;
+    private static FTWWindow window;
 
     public static void main (String[] args) throws Exception {
         ps = new ProblemSet(questions, answers, images);
         GameSettings gs = new GameSettings();
-        FTWWindow window = new FTWWindow(gs);
+        window = new FTWWindow(gs);
         while (true) {
             gs.setDone(false);
             while (!gs.isDone());
@@ -25,6 +26,10 @@ public class FTW {
 
     public static int getSize () {
         return ps.getSize();
+    }
+
+    public static void show () {
+        window.show();
     }
 
     public static void startGame (boolean isMulti, int n, int t, String name) throws Exception {
