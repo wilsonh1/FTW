@@ -98,3 +98,48 @@ A pair of standard 6-sided fair dice is rolled once. The sum of the numbers roll
 In the eight-term sequence \(A\), \(B\), \(C\), \(D\), \(E\), \(F\), \(G\), \(H\), the value of \(C\) is 5 and the sum of any three consecutive terms is 30. What is \(A+H\)?
 Two points on the circumference of a circle of radius \(r\) are selected independently and at random. From each point a chord of length \(r\) is drawn in a clockwise direction. What is the probability that the two chords intersect?
 The sum of two angles of a triangle is \(\frac{6}{5}\) of a right angle, and one of these two angles is \(30^{\circ}\) larger than the other. What is the degree measure of the largest angle in the triangle?
+How many minutes are there in half of a day?
+A certain gameboard consists of an \(N × N\) array of squares. Vijay places a token on every square that does not border an edge of the board. If Vijay uses exactly 169 tokens, what is the value of \(N\)?
+What is the greatest common factor of the first 100 positive prime numbers?
+Triangle \(ABC\) has perimeter 24 cm and area 20 sq cm. Triangle \(DEF\) is similar to triangle \(ABC\) and has area 45 sq cm. What is the perimeter of triangle \(DEF\), in centimeters?
+What is the area of the triangle with side lengths 5, 5 and 6, in square units?
+What is the product of the least common multiple and the greatest common factor of 10 and 15?
+The product of three distinct prime numbers is 130. What is the greatest of the three prime numbers?
+A fence that is 33 feet long is held up by a number of posts. There must be a post at each end of the fence, and consecutive posts cannot be more than 6 feet apart. What is the minimum number of posts needed to hold up this fence?
+What is the product of 42 and 48?
+Through the first 81 games of an 82-game basketball season, Michael averaged 29 points per game. Assuming Michael has played in all 81 games, how many points must he score in the final game to average 30 points per game for the season?
+Marcus can walk 15 blocks in one hour. How many minutes does it take him to walk 50 blocks?
+The product of two consecutive negative integers is 42. What is their sum?
+If angle \(A\) is an acute angle, what is the absolute difference between the degree measures of the supplement of \(A\) and the complement of \(A\), in degrees?
+If \(a\) and \(b\) are positive integers such that \(a^{2} + b^{2}\) = 197, what is the value of \(a + b\)?
+If \(a + b\) is twice \(a - b\) and \(ab\neq0\), what is the ratio of \(b\) to \(a\)? Express your answer as a common fraction.
+One-half of the students in Mr. Meyer’s class are boys, and one-third of the students in Ms. Sanchez’s class are boys. If both classes have the same number of students, what fraction of the two classes combined are boys? Express your answer as a common fraction.
+The area of a certain triangle is numerically equal to five times the length of its base. What is the height of the triangle, in units?
+If \(x\) is a number such that \(2x + 5 = 9\), what is the value of the expression \((2x + 6)(2x + 7)\)?
+Brent flips three fair coins in succession. Given that the first coin lands heads, what is the probability that all his coins will land heads? Express your answer as a common fraction.
+What is the smallest perfect square divisible by at least three distinct prime numbers?
+How many zeros appear at the end of the product of the first 2020 primes?
+The arithmetic mean of Josh’s four test scores is 80. If three of Josh’s test scores have a mean of 87, what is Josh’s score for the fourth test? Express your answer to the nearest whole number
+The top and bottom faces of a large cube are painted orange, and the four lateral faces are painted purple. The large cube is then cut into 125 unit cubes. How many of the unit cubes have exactly one purple face?
+The speed of light in space is 299,792.46 km/s. How many minutes does light take to travel 54,600,000 km from Mars to Earth? Express your answer to the nearest whole number.
+A list of four single-digit positive integers has median \(m\) and unique mode \(d\). What is the greatest possible value of \(m − d\)? Express your answer as a decimal to the nearest tenth.
+What is the area, in square units, of a right triangle that has integer side lengths and perimeter 36 units?
+In equilateral triangle \(ABC\), the length of the angle bisector from vertex \(A\) to side \(BC\) is 12 units long. What is the perimeter of the triangle, in units? Express your answer in simplest radical form.
+How many ordered triples of positive integers \((x, y, z)\) satisfy \(xyz\) = 12?
+What is the arithmetic mean of all two-digit numbers whose digits sum to 9?
+If \(x\) is a number such that \(x^{2} + x − 1\) = 0, what is the value of \(4x^{2} + 4x + 1\)?
+What is the value of \(8100 − (94 × 86)\)?
+Six students will form a 3-person red team and a 3-person blue team to play a game. In how many ways can the teams be formed if two of the students, Eric and David, cannot be on the same team?
+How many distinct ways are there to arrange the seven letters in ALGEBRA?
+If \(x\) and \(y\) are positive numbers such that 20% of \(x \)% of \(y\) is equal to \(x\), what is the value of \(y\)?
+An integer is called eclectic if all its digits are distinct. What is the sum of the greatest 3-digit eclectic integer and the least positive 3-digit eclectic integer?
+Sky attempted to score a goal five times. For each attempt, she was equally likely to make a goal or miss. What is the probability that Sky scored at least two goals? Express your answer as a common fraction.
+How many total cubic feet of glass are needed to make a 4-foot by 6-foot window that is \(\frac{1}{8}\) inch thick? Express your answer as a common fraction.
+In how many distinct ways can regular pentagon \(ABCDE\) be constructed so that each side is either red or blue and no pair of adjacent sides are the same color?
+What is the median of the set of all positive divisors of 2020? Express your answer as a decimal to the nearest tenth.
+In triangle \(ABC\), \(AB=10\) units and \(BC=16\) units. What is the sum of the least and greatest possible integer lengths for side \(AC\)?
+What is the value of \(123.45 + 234.51 + 345.12 + 451.23 + 512.34\)? Express your answer as a decimal to the nearest hundredth.
+What is the area, in square inches, of an isosceles trapezoid with bases of lengths 6 inches and 14 inches and nonparallel sides of length 5 inches?
+What is the quotient when 1,000,000,000 is divided by \(2^{8} \cdot 5^{7}\)?
+The arithmetic mean of seven consecutive integers is \(x\). What is the absolute difference between the greatest of the seven integers and \(x\)?
+Andrea lists six prime numbers whose sum is a multiple of 10. Andrea’s numbers, in increasing order, are 13, 29, 31, \(p\), 47, 53. What is the value of \(p\)?
