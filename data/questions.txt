@@ -128,7 +128,7 @@ In equilateral triangle \(ABC\), the length of the angle bisector from vertex \(
 How many ordered triples of positive integers \((x, y, z)\) satisfy \(xyz\) = 12?
 What is the arithmetic mean of all two-digit numbers whose digits sum to 9?
 If \(x\) is a number such that \(x^{2} + x − 1\) = 0, what is the value of \(4x^{2} + 4x + 1\)?
-What is the value of \(8100 − (94 × 86)\)?
+What is the value of \(8100 - (94\times86)\)?
 Six students will form a 3-person red team and a 3-person blue team to play a game. In how many ways can the teams be formed if two of the students, Eric and David, cannot be on the same team?
 How many distinct ways are there to arrange the seven letters in ALGEBRA?
 If \(x\) and \(y\) are positive numbers such that 20% of \(x \)% of \(y\) is equal to \(x\), what is the value of \(y\)?
