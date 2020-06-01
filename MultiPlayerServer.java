@@ -36,6 +36,10 @@ public class MultiPlayerServer extends Game {
             try {
                 connection = server.accept();
             } catch (SocketTimeoutException e) {
+                if (!isActive()) {
+                    server.close();
+                    return;
+                }
                 if (b.get())
                     break;
                 continue;
@@ -88,14 +92,14 @@ public class MultiPlayerServer extends Game {
                 }
             }
             String m = assignPoints(responses);
-            displayMessage(m, false);
             broadcast(m);
+            displayMessage(m, false);
             StringBuffer lb = new StringBuffer("Leaderboard (" + (i + 1) + "/" + getCount() + ")\n-----------\n");
             for (Player rnk : leaderboard)
                 lb.append(rnk.getName() + " - " + rnk.getPoints() + " point(s)\n");
             String lbs = lb.toString().trim();
-            updateSide(lbs, true);
             broadcast(lbs);
+            updateSide(lbs, true);
             displayMessage((i < getCount() - 1) ? "Next question..." : "Results...", false);
         }
         Thread.sleep(5000);

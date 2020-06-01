@@ -127,11 +127,11 @@ What is the area, in square units, of a right triangle that has integer side len
 In equilateral triangle \(ABC\), the length of the angle bisector from vertex \(A\) to side \(BC\) is 12 units long. What is the perimeter of the triangle, in units? Express your answer in simplest radical form.
 How many ordered triples of positive integers \((x, y, z)\) satisfy \(xyz\) = 12?
 What is the arithmetic mean of all two-digit numbers whose digits sum to 9?
-If \(x\) is a number such that \(x^{2} + x − 1\) = 0, what is the value of \(4x^{2} + 4x + 1\)?
+If \(x\) is a number such that \(x^{2} + x - 1\) = 0, what is the value of \(4x^{2} + 4x + 1\)?
 What is the value of \(8100 - (94\times86)\)?
 Six students will form a 3-person red team and a 3-person blue team to play a game. In how many ways can the teams be formed if two of the students, Eric and David, cannot be on the same team?
 How many distinct ways are there to arrange the seven letters in ALGEBRA?
-If \(x\) and \(y\) are positive numbers such that 20% of \(x \)% of \(y\) is equal to \(x\), what is the value of \(y\)?
+If \(x\) and \(y\) are positive numbers such that 20% of \(x\)% of \(y\) is equal to \(x\), what is the value of \(y\)?
 An integer is called eclectic if all its digits are distinct. What is the sum of the greatest 3-digit eclectic integer and the least positive 3-digit eclectic integer?
 Sky attempted to score a goal five times. For each attempt, she was equally likely to make a goal or miss. What is the probability that Sky scored at least two goals? Express your answer as a common fraction.
 How many total cubic feet of glass are needed to make a 4-foot by 6-foot window that is \(\frac{1}{8}\) inch thick? Express your answer as a common fraction.
