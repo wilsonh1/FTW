@@ -166,7 +166,7 @@ public class FTWWindow {
 
         final String[] opts = {"Join", "Cancel"};
 
-        if (JOptionPane.showOptionDialog(frame, fieldsPanel, "New game",
+        if (JOptionPane.showOptionDialog(frame, fieldsPanel, "Join game",
             JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null,
             opts, opts[0]) != 0) {
             return;
